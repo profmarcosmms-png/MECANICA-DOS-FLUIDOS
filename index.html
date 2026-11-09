@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>APOIO AULA 14 - MECÂNICA DOS FLUIDOS</title>
+<script>
+window.MathJax = { tex: { inlineMath: [['$','$'],['\\(','\\)']], displayMath: [['$$','$$']] }, svg: { fontCache: 'global' } };
+</script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"></script>
+<style>
+:root{
+  --accent:#0284c7; --accent-dark:#0369a1; --hdr1:#e0f2fe; --hdr2:#bae6fd;
+  --bg:#f8fafc; --card:#fff; --text:#1e293b; --border:#e2e8f0;
+  --explain-bg:#fffbeb; --explain-border:#f59e0b; --explain-text:#78350f;
+  --ok-bg:#ecfdf5; --ok-border:#10b981; --ok-text:#065f46;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.55;margin:0;padding:14px;font-size:16px}
+.container{max-width:920px;margin:0 auto}
+
+/* ---------- Cabeçalho (empilha no celular) ---------- */
+header{background:linear-gradient(135deg,var(--hdr1),var(--hdr2));border:1px solid #7dd3fc;border-radius:14px;padding:14px 20px;margin-bottom:12px;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;box-shadow:0 4px 15px -3px rgba(3,105,161,.1)}
+.header-texto{flex:1;min-width:220px}
+header h1{margin:0 0 4px;font-size:1.35rem;line-height:1.2;color:var(--accent-dark)}
+header p{margin:0;font-size:.88rem;color:#0c4a6e}
+.tag{display:inline-block;background:rgba(255,255,255,.75);color:var(--accent-dark);padding:3px 10px;border-radius:20px;font-size:.75rem;margin-top:6px;font-weight:600;border:1px solid #93c5fd}
+.logo{height:64px;width:auto;flex-shrink:0}
+
+/* ---------- Seletor de curso / turma ---------- */
+.seletor{position:sticky;top:0;z-index:20;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:10px 12px;margin-bottom:12px;
+  display:grid;grid-template-columns:1fr 1fr;gap:10px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.seletor label{display:block;font-size:.7rem;font-weight:700;color:var(--accent-dark);text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px}
+.seletor select{width:100%;min-height:46px;font-size:16px;padding:8px 10px;border:1.5px solid #93c5fd;border-radius:10px;background:#fff;color:var(--text);appearance:auto}
+.info{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-bottom:14px}
+.info div{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:8px 12px;font-size:.86rem}
+.info b{display:block;font-size:.68rem;color:var(--accent-dark);text-transform:uppercase;letter-spacing:.04em}
+
+/* ---------- Blocos de teoria / fórmulas ---------- */
+.bloco{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--accent);border-radius:12px;padding:14px 16px;margin-bottom:14px;overflow-x:auto}
+.bloco h2{margin:0 0 8px;font-size:1.1rem;color:var(--accent-dark)}
+details.bloco summary{cursor:pointer;font-weight:700;color:var(--accent-dark);min-height:32px}
+
+/* ---------- Atividades ---------- */
+.exercise-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:18px;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.exercise-card h3{margin:0 0 10px;font-size:1.08rem;color:var(--accent-dark)}
+.enunciado{background:#f1f5f9;border-radius:10px;padding:12px 14px;margin-bottom:12px;overflow-x:auto}
+.btn{display:inline-block;background:var(--accent);color:#fff;border:0;border-radius:10px;padding:12px 18px;min-height:46px;font-size:1rem;font-weight:700;cursor:pointer;touch-action:manipulation}
+.btn:active{background:var(--accent-dark)}
+.btn.sec{background:#64748b}
+.progresso{margin-left:10px;font-size:.85rem;color:#475569;font-weight:600}
+.passo{display:none;border-left:4px solid var(--accent);background:var(--solution-bg,#f0f9ff);border-radius:0 10px 10px 0;padding:12px 14px;margin:12px 0;animation:in .35s ease}
+@keyframes in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.passo-n{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:var(--accent);color:#fff;font-weight:700;font-size:.85rem;margin-right:8px}
+.passo-t{font-weight:700;color:var(--accent-dark)}
+.calc{margin:8px 0;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;max-width:100%}
+.explicacao{background:var(--explain-bg);border-left:4px solid var(--explain-border);color:var(--explain-text);border-radius:0 8px 8px 0;padding:10px 12px;margin-top:8px;font-size:.93rem}
+.nav-inline{margin-top:12px;display:flex;gap:8px;flex-wrap:wrap}
+.resposta{display:none;background:var(--ok-bg);border:2px solid var(--ok-border);color:var(--ok-text);border-radius:12px;padding:12px 14px;margin-top:12px;overflow-x:auto;animation:in .35s ease}
+mjx-container{max-width:100%;overflow-x:auto;overflow-y:hidden}
+
+footer{text-align:center;font-size:.8rem;color:#64748b;margin:22px 0 8px}
+
+/* ---------- Celular ---------- */
+@media (max-width:600px){
+  body{padding:10px}
+  header{flex-direction:column;align-items:stretch;padding:12px 14px}
+  .logo{order:-1;height:54px;align-self:flex-start}
+  header h1{font-size:1.15rem}
+  .seletor{gap:8px;padding:8px 10px}
+  .seletor select{font-size:15px;padding:6px 8px}
+  .btn{width:100%}
+  .nav-inline .btn{width:100%}
+  .progresso{display:block;margin:8px 0 0}
+  .exercise-card{padding:12px}
+}
+@media print{
+  .seletor,.btn,.nav-inline{display:none!important}
+  .passo,.resposta{display:block!important;animation:none}
+  body{background:#fff;padding:0}
+}
+/* ---------- Simulações ---------- */
+.sim{margin:4px 0 6px}
+.cvwrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--border);border-radius:10px;background:#fff;margin-bottom:10px;touch-action:pan-x pan-y}
+.cvwrap canvas{display:block;width:760px;height:auto}
+.cvwrap.big canvas{width:1080px}
+.sim .amp{width:100%;margin-bottom:10px}
+.ctl{margin:8px 0}
+.ctl label{display:block;font-weight:700;font-size:.88rem;color:var(--accent-dark);margin-bottom:2px}
+.ctl label output{float:right;color:#0f172a;font-variant-numeric:tabular-nums}
+.ctl input[type=range]{width:100%;height:34px;accent-color:var(--accent)}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button{flex:1 1 auto;min-height:44px;padding:8px 12px;border:1.5px solid #93c5fd;background:#fff;border-radius:10px;font-size:.95rem;font-weight:600;color:var(--accent-dark)}
+.seg button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.live,.read{background:#f1f5f9;border-radius:10px;padding:10px 12px;margin:10px 0;font-size:.95rem;line-height:1.6;overflow-x:auto}
+.read{display:grid;grid-template-columns:1fr auto;gap:2px 12px}
+.read span:nth-child(even){font-weight:700;text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.obs{background:var(--explain-bg);border-left:4px solid var(--explain-border);color:var(--explain-text);border-radius:0 8px 8px 0;padding:10px 12px;margin:10px 0;font-size:.93rem}
+.sim .btn{width:100%}
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <img class="logo" alt="SENAI" src="data:image/png;base64,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">
+  <div class="header-texto">
+    <h1 id="h-titulo"></h1>
+    <p id="h-sub"></p>
+    <span class="tag" id="h-tag"></span>
+  </div>
+</header>
+
+<div class="seletor" id="seletor">
+  <div><label for="sel-curso">Curso</label><select id="sel-curso"></select></div>
+  <div><label for="sel-turma">Turma</label><select id="sel-turma"></select></div>
+</div>
+
+<div class="info" id="info"></div>
+<div id="teoria"></div>
+<div id="exercicios"></div>
+<footer id="rodape"></footer>
+</div>
+
+<script>
+const SPEC = {"tipo": "aula", "titulo": "APOIO AULA 14 - MECÂNICA DOS FLUIDOS", "subtitulo": "Física Aplicada — {curso}", "disciplina": "Física Aplicada", "referencia": "Young & Freedman — Mecânica dos Fluidos", "aula": "Aula 14/20 · 09/11/2026", "rodape": "Prof. Marcos Monteiro · SENAI · Hidrostática, Bernoulli e Venturi", "teoria": [{"titulo": "📘 Formulário da Aula 14", "recolhivel": true, "html": "\n<p><b>Densidade:<\/b> $\\rho=\\dfrac{m}{V}$ &nbsp;·&nbsp; peso específico $\\gamma=\\rho g$ &nbsp;·&nbsp; água: $1\\,000\\ \\text{kg/m}^3$<\/p>\n<p><b>Stevin:<\/b> $p=p_0+\\rho g h$ &nbsp;·&nbsp; $p_{abs}=p_{atm}+p_{man}$ &nbsp;·&nbsp; $p_{atm}=1{,}013\\times10^5\\ \\text{Pa}=760\\ \\text{mmHg}$<\/p>\n<p><b>Pascal:<\/b> $\\dfrac{F_1}{A_1}=\\dfrac{F_2}{A_2}$ &nbsp;·&nbsp; $A_1d_1=A_2d_2$ (ganha força, perde curso)<\/p>\n<p><b>Arquimedes:<\/b> $E=\\rho_f V_{sub}\\,g$ &nbsp;·&nbsp; flutua se $\\rho_c<\\rho_f$ com $\\dfrac{V_{sub}}{V}=\\dfrac{\\rho_c}{\\rho_f}$<\/p>\n<p><b>Vazão e continuidade:<\/b> $Q=Av$ &nbsp;·&nbsp; $A_1v_1=A_2v_2$ &nbsp;·&nbsp; $A=\\dfrac{\\pi D^2}{4}$<\/p>\n<p><b>Bernoulli:<\/b> $p+\\tfrac12\\rho v^2+\\rho g h=\\text{constante}$<\/p>\n<p><b>Venturi:<\/b> $Q=A_2\\sqrt{\\dfrac{2\\Delta p}{\\rho\\left[1-(A_2/A_1)^2\\right]}}$ &nbsp;·&nbsp; $\\Delta p=\\rho g\\Delta h$ ou $(\\rho_m-\\rho)gh$<\/p>\n<p><b>Sucção:<\/b> $\\Delta p=\\tfrac12\\rho(v_2^2-v_1^2)$ &nbsp;·&nbsp; $F=\\Delta p\\,A$ &nbsp;·&nbsp; adote $g=9{,}8\\ \\text{m/s}^2$<\/p>\n"}, {"titulo": "▶ Simulação 1 — Pressão hidrostática (Stevin)", "recolhivel": true, "html": "<div class=\"sim\"><div class=\"cvwrap\"><canvas id=\"cv_stevin\" data-w=\"1080\" data-h=\"740\"><\/canvas><\/div><button class=\"btn sec amp\" type=\"button\">⛶ Ampliar figura · arraste a figura para os lados<\/button><div class=\"ctl\"><label>Fluido<\/label><div class=\"seg\" id=\"st_fl\"><button data-f=\"agua\" class=\"on\">Água<\/button><button data-f=\"oleo\">Óleo hidr.<\/button><button data-f=\"hg\">Mercúrio<\/button><\/div><\/div><div class=\"ctl\"><label>Profundidade do sensor, h <output id=\"st_ho\"><\/output><\/label><input type=\"range\" id=\"st_h\" min=\"0\" max=\"5\" step=\"0.1\" value=\"2\" data-u=\"m\" data-d=\"1\"><\/div><div class=\"live\" id=\"st_out\"><\/div><div class=\"obs\">Aumente $h$: a pressão cresce <b>linearmente<\/b>. Troque água por mercúrio: mesma profundidade, pressão muito maior. Em $h=0$ a pressão vale $p_0$ (não é zero).<\/div><\/div>"}, {"titulo": "▶ Simulação 2 — Prensa hidráulica (Pascal)", "recolhivel": true, "html": "<div class=\"sim\"><div class=\"cvwrap\"><canvas id=\"cv_pascal\" data-w=\"1080\" data-h=\"740\"><\/canvas><\/div><button class=\"btn sec amp\" type=\"button\">⛶ Ampliar figura · arraste a figura para os lados<\/button><div class=\"ctl\"><label>Força no êmbolo menor, F₁ <output id=\"pa_fo\"><\/output><\/label><input type=\"range\" id=\"pa_f\" min=\"10\" max=\"500\" step=\"10\" value=\"150\" data-u=\"N\" data-d=\"0\"><\/div><div class=\"ctl\"><label>Área do êmbolo menor, A₁ <output id=\"pa_a1o\"><\/output><\/label><input type=\"range\" id=\"pa_a1\" min=\"5\" max=\"50\" step=\"1\" value=\"20\" data-u=\"cm²\" data-d=\"0\"><\/div><div class=\"ctl\"><label>Área do êmbolo maior, A₂ <output id=\"pa_a2o\"><\/output><\/label><input type=\"range\" id=\"pa_a2\" min=\"100\" max=\"800\" step=\"10\" value=\"400\" data-u=\"cm²\" data-d=\"0\"><\/div><div class=\"ctl\"><label>Curso do êmbolo menor, d₁ <output id=\"pa_do\"><\/output><\/label><input type=\"range\" id=\"pa_d\" min=\"0\" max=\"30\" step=\"1\" value=\"20\" data-u=\"cm\" data-d=\"0\"><\/div><div class=\"read\" id=\"pa_out\"><\/div><div class=\"obs\">A pressão $p=F_1/A_1$ é a <b>mesma<\/b> nos dois êmbolos. O ganho de força é $A_2/A_1$, mas o curso cai na mesma proporção: $W_1=W_2$.<\/div><\/div>"}, {"titulo": "▶ Simulação 3 — Empuxo (Arquimedes)", "recolhivel": true, "html": "<div class=\"sim\"><div class=\"cvwrap\"><canvas id=\"cv_arq\" data-w=\"1080\" data-h=\"740\"><\/canvas><\/div><button class=\"btn sec amp\" type=\"button\">⛶ Ampliar figura · arraste a figura para os lados<\/button><div class=\"ctl\"><label>Fluido do tanque<\/label><div class=\"seg\" id=\"ar_fl\"><button data-r=\"1000\" class=\"on\">Água<\/button><button data-r=\"1025\">Água do mar<\/button><button data-r=\"870\">Óleo<\/button><button data-r=\"13600\">Mercúrio<\/button><\/div><\/div><div class=\"ctl\"><label>Densidade do bloco, ρc <output id=\"ar_ro\"><\/output><\/label><input type=\"range\" id=\"ar_r\" min=\"100\" max=\"9000\" step=\"50\" value=\"600\" data-u=\"kg/m³\" data-d=\"0\"><\/div><div class=\"ctl\"><label>Materiais<\/label><div class=\"seg\" id=\"ar_pre\"><button data-r=\"500\">Madeira<\/button><button data-r=\"920\">Gelo<\/button><button data-r=\"2700\">Alumínio<\/button><button data-r=\"7850\">Aço<\/button><\/div><\/div><div class=\"live\" id=\"ar_out\"><\/div><div class=\"obs\">Teste o <b>aço no mercúrio<\/b>: o aço flutua! Quando afunda, o fundo ainda reage com $N=P-E$.<\/div><\/div>"}, {"titulo": "▶ Simulação 4 — Vazão e Continuidade", "recolhivel": true, "html": "<div class=\"sim\"><div class=\"cvwrap\"><canvas id=\"cv_cont\" data-w=\"1080\" data-h=\"500\"><\/canvas><\/div><button class=\"btn sec amp\" type=\"button\">⛶ Ampliar figura · arraste a figura para os lados<\/button><div class=\"ctl\"><label>Vazão, Q <output id=\"co_qo\"><\/output><\/label><input type=\"range\" id=\"co_q\" min=\"0.1\" max=\"8\" step=\"0.01\" value=\"0.98\" data-u=\"L/s\" data-d=\"2\"><\/div><div class=\"ctl\"><label>Diâmetro da seção 1, D₁ <output id=\"co_d1o\"><\/output><\/label><input type=\"range\" id=\"co_d1\" min=\"10\" max=\"50\" step=\"1\" value=\"25\" data-u=\"mm\" data-d=\"0\"><\/div><div class=\"ctl\"><label>Diâmetro da seção 2, D₂ <output id=\"co_d2o\"><\/output><\/label><input type=\"range\" id=\"co_d2\" min=\"5\" max=\"50\" step=\"1\" value=\"10\" data-u=\"mm\" data-d=\"0\"><\/div><div class=\"read\" id=\"co_rd\"><\/div><div class=\"live\" id=\"co_out\"><\/div><div class=\"obs\">Em regime permanente $Q$ é a <b>mesma<\/b> em toda a tubulação. Diminuiu a área? O fluido <b>acelera<\/b> — como o dedo na ponta da mangueira.<\/div><\/div>"}, {"titulo": "▶ Simulação 5 — Bernoulli (barras de energia)", "recolhivel": true, "html": "<div class=\"sim\"><div class=\"cvwrap\"><canvas id=\"cv_bern\" data-w=\"1080\" data-h=\"740\"><\/canvas><\/div><button class=\"btn sec amp\" type=\"button\">⛶ Ampliar figura · arraste a figura para os lados<\/button><div class=\"ctl\"><label>Vazão, Q <output id=\"be_qo\"><\/output><\/label><input type=\"range\" id=\"be_q\" min=\"2\" max=\"30\" step=\"0.1\" value=\"15.7\" data-u=\"L/s\" data-d=\"1\"><\/div><div class=\"ctl\"><label>Diâmetro em ①, D₁ <output id=\"be_d1o\"><\/output><\/label><input type=\"range\" id=\"be_d1\" min=\"40\" max=\"120\" step=\"1\" value=\"100\" data-u=\"mm\" data-d=\"0\"><\/div><div class=\"ctl\"><label>Diâmetro em ②, D₂ <output id=\"be_d2o\"><\/output><\/label><input type=\"range\" id=\"be_d2\" min=\"20\" max=\"120\" step=\"1\" value=\"50\" data-u=\"mm\" data-d=\"0\"><\/div><div class=\"ctl\"><label>Altura de ② acima de ①, h₂ <output id=\"be_ho\"><\/output><\/label><input type=\"range\" id=\"be_h\" min=\"0\" max=\"5\" step=\"0.1\" value=\"5\" data-u=\"m\" data-d=\"1\"><\/div><div class=\"ctl\"><label>Pressão absoluta em ①, p₁ <output id=\"be_po\"><\/output><\/label><input type=\"range\" id=\"be_p\" min=\"100\" max=\"400\" step=\"5\" value=\"200\" data-u=\"kPa\" data-d=\"0\"><\/div><div class=\"read\" id=\"be_rd\"><\/div><div class=\"obs\">Valores iniciais = <b>Exemplo 6<\/b>. Estreite $D_2$ ou suba $h_2$: a barra de pressão <b>diminui<\/b> e as outras crescem, mas a altura total <b>não muda<\/b>.<\/div><\/div>"}, {"titulo": "▶ Simulação 6 — Medidor Venturi", "recolhivel": true, "html": "<div class=\"sim\"><div class=\"cvwrap\"><canvas id=\"cv_simv\" data-w=\"1080\" data-h=\"740\"><\/canvas><\/div><button class=\"btn sec amp\" type=\"button\">⛶ Ampliar figura · arraste a figura para os lados<\/button><div class=\"ctl\"><label>Vazão real, Q <output id=\"sv_qo\"><\/output><\/label><input type=\"range\" id=\"sv_q\" min=\"1\" max=\"30\" step=\"0.05\" value=\"14.25\" data-u=\"L/s\" data-d=\"2\"><\/div><div class=\"ctl\"><label>Diâmetro da entrada, D₁ <output id=\"sv_d1o\"><\/output><\/label><input type=\"range\" id=\"sv_d1\" min=\"60\" max=\"120\" step=\"1\" value=\"100\" data-u=\"mm\" data-d=\"0\"><\/div><div class=\"ctl\"><label>Diâmetro da garganta, D₂ <output id=\"sv_d2o\"><\/output><\/label><input type=\"range\" id=\"sv_d2\" min=\"20\" max=\"90\" step=\"1\" value=\"50\" data-u=\"mm\" data-d=\"0\"><\/div><div class=\"ctl\"><label>Pressão manométrica na entrada, p₁ <output id=\"sv_po\"><\/output><\/label><input type=\"range\" id=\"sv_p\" min=\"30\" max=\"120\" step=\"1\" value=\"80\" data-u=\"kPa\" data-d=\"0\"><\/div><div class=\"read\" id=\"sv_rd\"><\/div><div class=\"obs\">Valores iniciais = <b>Exemplo 7<\/b>. Dobre $Q$: $\\Delta p$ fica <b>4×<\/b> maior ($\\Delta p\\propto Q^2$). Feche a garganta: $\\Delta p$ cresce (mais sensível, mais perda de carga).<\/div><\/div>"}, {"titulo": "▶ Simulação 7 — Sucção pneumática (efeito Venturi)", "recolhivel": true, "html": "<div class=\"sim\"><div class=\"cvwrap\"><canvas id=\"cv_ejet\" data-w=\"1080\" data-h=\"740\"><\/canvas><\/div><button class=\"btn sec amp\" type=\"button\">⛶ Ampliar figura · arraste a figura para os lados<\/button><div class=\"ctl\"><button class=\"btn\" type=\"button\" id=\"ej_btn\">⏸ Desligar a sucção<\/button><\/div><div class=\"obs\">Ar passa pela contração → $v$ sobe → $p$ cai abaixo da atmosfera → a atmosfera empurra a peça contra a ventosa: $F=\\Delta p\\,A$. (Ejetores reais usam escoamento compressível; Bernoulli é o modelo didático.)<\/div><\/div>"}], "exercicios": [{"titulo": "Dedução 1 — Equação de Bernoulli", "enunciado": "<p>Fluido <b>ideal<\/b> (incompressível, sem viscosidade, escoamento laminar e permanente) em um tubo de seção variável. Um mesmo volume $\\Delta V$ entra em ① e sai em ②. Vamos aplicar o <b>Teorema Trabalho–Energia<\/b> a esse elemento de fluido.<\/p><svg style=\"max-width:100%;height:auto;background:#fff;border-radius:8px\" viewBox=\"0 0 1000 520\" font-family=\"Segoe UI,system-ui,sans-serif\">\n          <defs><marker id=\"ah\" viewBox=\"0 0 10 10\" refX=\"8\" refY=\"5\" markerWidth=\"7\" markerHeight=\"7\" orient=\"auto-start-reverse\"><path d=\"M0 0 L10 5 L0 10z\" fill=\"#0f172a\"/><\/marker>\n          <marker id=\"ar\" viewBox=\"0 0 10 10\" refX=\"8\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto-start-reverse\"><path d=\"M0 0 L10 5 L0 10z\" fill=\"#dc2626\"/><\/marker><\/defs>\n          <rect width=\"1000\" height=\"520\" fill=\"#fff\"/>\n          <line x1=\"20\" y1=\"450\" x2=\"980\" y2=\"450\" stroke=\"#64748b\" stroke-width=\"3\" stroke-dasharray=\"12 8\"/>\n          <text x=\"760\" y=\"440\" text-anchor=\"end\" font-size=\"23\" fill=\"#475569\">nível de referência (h = 0)<\/text>\n          <polygon points=\"150,200 330,200 650,60 880,60 880,120 650,120 330,320 150,320\" fill=\"#bae6fd\" stroke=\"#0369a1\" stroke-width=\"7\" stroke-linejoin=\"round\"/>\n          <rect x=\"190\" y=\"200\" width=\"60\" height=\"120\" fill=\"#fde68a\" stroke=\"#b45309\" stroke-width=\"3\"/>\n          <text x=\"220\" y=\"268\" text-anchor=\"middle\" font-size=\"26\" font-weight=\"700\" fill=\"#78350f\">ΔV<\/text>\n          <rect x=\"700\" y=\"60\" width=\"120\" height=\"60\" fill=\"#fde68a\" stroke=\"#b45309\" stroke-width=\"3\"/>\n          <text x=\"760\" y=\"98\" text-anchor=\"middle\" font-size=\"26\" font-weight=\"700\" fill=\"#78350f\">ΔV<\/text>\n          <line x1=\"190\" y1=\"345\" x2=\"250\" y2=\"345\" stroke=\"#0f172a\" stroke-width=\"3\" marker-start=\"url(#ah)\" marker-end=\"url(#ah)\"/>\n          <text x=\"220\" y=\"378\" text-anchor=\"middle\" font-size=\"25\" font-weight=\"700\">Δx₁<\/text>\n          <line x1=\"700\" y1=\"145\" x2=\"820\" y2=\"145\" stroke=\"#0f172a\" stroke-width=\"3\" marker-start=\"url(#ah)\" marker-end=\"url(#ah)\"/>\n          <text x=\"760\" y=\"178\" text-anchor=\"middle\" font-size=\"25\" font-weight=\"700\">Δx₂ = 2·Δx₁<\/text>\n          <line x1=\"30\" y1=\"260\" x2=\"146\" y2=\"260\" stroke=\"#dc2626\" stroke-width=\"9\" marker-end=\"url(#ar)\"/>\n          <text x=\"30\" y=\"232\" font-size=\"25\" font-weight=\"700\" fill=\"#b91c1c\">F₁ = p₁·A₁<\/text>\n          <line x1=\"990\" y1=\"90\" x2=\"886\" y2=\"90\" stroke=\"#dc2626\" stroke-width=\"9\" marker-end=\"url(#ar)\"/>\n          <text x=\"990\" y=\"38\" text-anchor=\"end\" font-size=\"25\" font-weight=\"700\" fill=\"#b91c1c\">F₂ = p₂·A₂<\/text>\n          <circle cx=\"300\" cy=\"260\" r=\"7\" fill=\"#0f172a\"/><line x1=\"300\" y1=\"260\" x2=\"300\" y2=\"450\" stroke=\"#0f172a\" stroke-width=\"3\" stroke-dasharray=\"3 7\"/>\n          <line x1=\"300\" y1=\"448\" x2=\"300\" y2=\"268\" stroke=\"#0f172a\" stroke-width=\"3\" marker-end=\"url(#ah)\"/>\n          <text x=\"312\" y=\"400\" font-size=\"27\" font-weight=\"800\" fill=\"#c2410c\">h₁<\/text>\n          <circle cx=\"845\" cy=\"90\" r=\"7\" fill=\"#0f172a\"/>\n          <line x1=\"845\" y1=\"448\" x2=\"845\" y2=\"98\" stroke=\"#0f172a\" stroke-width=\"3\" marker-end=\"url(#ah)\"/>\n          <text x=\"858\" y=\"300\" font-size=\"27\" font-weight=\"800\" fill=\"#c2410c\">h₂<\/text>\n          <text x=\"40\" y=\"410\" font-size=\"26\" font-weight=\"700\" fill=\"#075985\">① p₁ · v₁ · A₁<\/text>\n          <text x=\"830\" y=\"215\" text-anchor=\"end\" font-size=\"26\" font-weight=\"700\" fill=\"#075985\">② p₂ · v₂ · A₂<\/text>\n          <text x=\"500\" y=\"500\" text-anchor=\"middle\" font-size=\"23\" fill=\"#475569\">O mesmo volume ΔV entra em ① e sai em ② (fluido incompressível)<\/text>\n        <\/svg>", "passos": [{"titulo": "Trabalho das forças de pressão", "calculo": "\\begin{aligned}W_1&=F_1\\,\\Delta x_1=p_1A_1\\Delta x_1=p_1\\,\\Delta V\\\\W_2&=-F_2\\,\\Delta x_2=-p_2\\,\\Delta V\\\\W_{pressão}&=(p_1-p_2)\\,\\Delta V\\end{aligned}", "porque": "$A_1\\Delta x_1=A_2\\Delta x_2=\\Delta V$ (continuidade: o volume que entra é o que sai). Na saída, a força $F_2$ se <b>opõe<\/b> ao deslocamento; por isso $W_2$ é negativo."}, {"titulo": "Trabalho da gravidade", "calculo": "\\Delta m=\\rho\\,\\Delta V\\qquad W_g=-\\Delta m\\,g\\,(h_2-h_1)=-\\rho\\,\\Delta V\\,g\\,(h_2-h_1)", "porque": "Ao subir de $h_1$ para $h_2$ a energia potencial aumenta, então a gravidade realiza trabalho <b>negativo<\/b>."}, {"titulo": "Teorema Trabalho–Energia: $W_{total}=\\Delta K$", "calculo": "(p_1-p_2)\\Delta V-\\rho\\Delta V g(h_2-h_1)=\\tfrac12\\rho\\Delta V v_2^2-\\tfrac12\\rho\\Delta V v_1^2", "porque": "O trabalho de todas as forças é igual à variação da energia cinética do elemento ($\\Delta K=\\tfrac12\\Delta m\\,v_2^2-\\tfrac12\\Delta m\\,v_1^2$, com $\\Delta m=\\rho\\Delta V$)."}, {"titulo": "Dividir tudo por $\\Delta V$", "calculo": "p_1-p_2-\\rho g(h_2-h_1)=\\tfrac12\\rho\\,(v_2^2-v_1^2)", "porque": "$\\Delta V$ aparece em todos os termos e cancela. Agora a equação é por <b>unidade de volume<\/b>."}, {"titulo": "Agrupar os termos do ponto 1 e do ponto 2", "calculo": "p_1+\\tfrac12\\rho v_1^2+\\rho g h_1=p_2+\\tfrac12\\rho v_2^2+\\rho g h_2", "porque": "Passamos o que é do ponto ① para a esquerda e o que é do ponto ② para a direita."}, {"titulo": "Conclusão e leitura física", "calculo": "p+\\tfrac12\\rho v^2+\\rho g h=\\text{constante}", "porque": "Os pontos 1 e 2 são arbitrários na linha de corrente, logo a soma é a mesma em <b>todos<\/b> eles. Cada termo é energia por volume ($\\text{Pa}=\\text{J/m}^3$): pressão, cinética e potencial."}], "resposta": "$p+\\tfrac12\\rho v^2+\\rho g h=\\text{constante}$ — conservação de energia mecânica por unidade de volume."}, {"titulo": "Dedução 2 — Vazão do medidor Venturi", "enunciado": "<p>Tubo horizontal que estreita de $A_1$ (entrada) para $A_2$ (garganta). Dois piezômetros mostram a diferença de nível $\\Delta h$. Deduza a vazão $Q$ em função de $\\Delta p=p_1-p_2$.<\/p><svg style=\"max-width:100%;height:auto;background:#fff;border-radius:8px\" viewBox=\"0 0 552 440\" font-family=\"Segoe UI,system-ui,sans-serif\">\n          <defs><marker id=\"ah2\" viewBox=\"0 0 10 10\" refX=\"8\" refY=\"5\" markerWidth=\"7\" markerHeight=\"7\" orient=\"auto-start-reverse\"><path d=\"M0 0 L10 5 L0 10z\" fill=\"#0f172a\"/><\/marker><\/defs>\n          <rect width=\"552\" height=\"440\" fill=\"#fff\"/>\n          <polygon points=\"20,230 150,230 250,270 330,270 430,230 530,230 530,350 430,350 330,310 250,310 150,350 20,350\" fill=\"#bae6fd\" stroke=\"#0369a1\" stroke-width=\"6\" stroke-linejoin=\"round\"/>\n          <rect x=\"70\" y=\"50\" width=\"30\" height=\"180\" fill=\"#fff\" stroke=\"#0f172a\" stroke-width=\"3\"/>\n          <rect x=\"72\" y=\"120\" width=\"26\" height=\"110\" fill=\"#7dd3fc\"/>\n          <rect x=\"275\" y=\"50\" width=\"30\" height=\"220\" fill=\"#fff\" stroke=\"#0f172a\" stroke-width=\"3\"/>\n          <rect x=\"277\" y=\"190\" width=\"26\" height=\"80\" fill=\"#7dd3fc\"/>\n          <line x1=\"100\" y1=\"120\" x2=\"450\" y2=\"120\" stroke=\"#0369a1\" stroke-width=\"2.5\" stroke-dasharray=\"8 6\"/>\n          <line x1=\"305\" y1=\"190\" x2=\"450\" y2=\"190\" stroke=\"#0369a1\" stroke-width=\"2.5\" stroke-dasharray=\"8 6\"/>\n          <line x1=\"420\" y1=\"122\" x2=\"420\" y2=\"188\" stroke=\"#0f172a\" stroke-width=\"3\" marker-start=\"url(#ah2)\" marker-end=\"url(#ah2)\"/>\n          <text x=\"436\" y=\"162\" font-size=\"30\" font-weight=\"800\" fill=\"#b45309\">Δh<\/text>\n          <text x=\"85\" y=\"395\" text-anchor=\"middle\" font-size=\"30\" font-weight=\"800\" fill=\"#075985\">①<\/text>\n          <text x=\"290\" y=\"395\" text-anchor=\"middle\" font-size=\"30\" font-weight=\"800\" fill=\"#075985\">②<\/text>\n          <text x=\"85\" y=\"425\" text-anchor=\"middle\" font-size=\"24\" fill=\"#475569\">p₁ · v₁ · A₁<\/text>\n          <text x=\"290\" y=\"425\" text-anchor=\"middle\" font-size=\"24\" fill=\"#475569\">p₂ · v₂ · A₂<\/text>\n          <line x1=\"34\" y1=\"290\" x2=\"120\" y2=\"290\" stroke=\"#0f172a\" stroke-width=\"6\" marker-end=\"url(#ah2)\"/>\n          <text x=\"60\" y=\"270\" font-size=\"26\" font-weight=\"800\">Q<\/text>\n        <\/svg>", "passos": [{"titulo": "Bernoulli entre ① e ② (mesma altura)", "calculo": "p_1+\\tfrac12\\rho v_1^2=p_2+\\tfrac12\\rho v_2^2\\;\\Rightarrow\\;\\Delta p=p_1-p_2=\\tfrac12\\rho\\,(v_2^2-v_1^2)", "porque": "Com $h_1=h_2$ o termo $\\rho g h$ aparece nos dois lados e cancela."}, {"titulo": "Continuidade para eliminar $v_1$", "calculo": "A_1v_1=A_2v_2\\;\\Rightarrow\\;v_1=\\frac{A_2}{A_1}\\,v_2", "porque": "A mesma vazão passa por ① e ②. Assim ficamos com uma única velocidade desconhecida."}, {"titulo": "Substituir $v_1$", "calculo": "\\Delta p=\\tfrac12\\rho v_2^2\\left[1-\\left(\\frac{A_2}{A_1}\\right)^2\\right]", "porque": "Colocamos $v_2^2$ em evidência."}, {"titulo": "Isolar $v_2$", "calculo": "v_2=\\sqrt{\\frac{2\\,\\Delta p}{\\rho\\left[1-\\left(A_2/A_1\\right)^2\\right]}}", "porque": "Multiplicamos por 2, dividimos pelo que multiplica $v_2^2$ e extraímos a raiz."}, {"titulo": "Vazão", "calculo": "Q=A_2\\,v_2=A_2\\sqrt{\\frac{2\\,\\Delta p}{\\rho\\left[1-\\left(A_2/A_1\\right)^2\\right]}}", "porque": "Vazão = área da garganta × velocidade na garganta."}, {"titulo": "Como obter $\\Delta p$ na prática", "calculo": "\\Delta p=\\rho\\,g\\,\\Delta h\\qquad\\text{ou}\\qquad\\Delta p=(\\rho_m-\\rho)\\,g\\,h", "porque": "Piezômetros: coluna do próprio fluido. Manômetro em U: usa-se a diferença entre a densidade do fluido manométrico $\\rho_m$ (ex.: mercúrio) e a do fluido. Em medidor real: $Q_{real}=C_d\\,Q$, com $C_d\\approx0{,}95$–$0{,}99$."}], "resposta": "$Q=A_2\\sqrt{\\dfrac{2\\,\\Delta p}{\\rho\\left[1-(A_2/A_1)^2\\right]}}$"}, {"titulo": "Exemplo 1 — Densidade: massa e peso do óleo do reservatório", "enunciado": "Reservatório com <b>200 L<\/b> de óleo hidráulico, $\\rho_{óleo}=870\\ \\text{kg/m}^3$. Calcule a massa e o peso do óleo e compare com 200 L de água. ($g=9{,}8\\ \\text{m/s}^2$)", "passos": [{"titulo": "Converter o volume para o SI", "calculo": "V=\\frac{200\\ \\text{L}}{1000}=0{,}200\\ \\text{m}^3", "porque": "A densidade está em kg/m³; então o volume precisa estar em m³ ($1\\ \\text{m}^3=1\\,000\\ \\text{L}$)."}, {"titulo": "Massa", "calculo": "\\rho=\\frac{m}{V}\\;\\Rightarrow\\;m=\\rho V=870\\times0{,}200=174\\ \\text{kg}", "porque": "Isolamos a massa multiplicando os dois lados por $V$."}, {"titulo": "Peso", "calculo": "P=mg=174\\times9{,}8=1\\,705{,}2\\ \\text{N}\\approx1{,}7\\ \\text{kN}", "porque": "Peso é força: massa × aceleração da gravidade."}, {"titulo": "Comparar com a água", "calculo": "m_{água}=1\\,000\\times0{,}200=200\\ \\text{kg}\\;\\Rightarrow\\;\\frac{174}{200}=0{,}87", "porque": "Para o mesmo volume o óleo tem 87 % da massa da água — por isso o óleo flutua sobre a água."}], "resposta": "$m=174\\ \\text{kg}$ e $P\\approx1{,}7\\times10^3\\ \\text{N}$"}, {"titulo": "Exemplo 2 — Stevin: pressão no fundo de um tanque de óleo", "enunciado": "Sensor no fundo de um tanque <b>aberto<\/b> de óleo hidráulico ($870\\ \\text{kg/m}^3$) com <b>3,0 m<\/b> de altura de óleo. Determine as pressões manométrica e absoluta. ($p_{atm}=101\\,300\\ \\text{Pa}$)", "passos": [{"titulo": "Teorema de Stevin", "calculo": "p=p_0+\\rho g h\\;\\Rightarrow\\;p-p_0=\\rho g h", "porque": "Tanque aberto: $p_0=p_{atm}$ na superfície. A diferença $p-p_0$ é a pressão manométrica."}, {"titulo": "Pressão manométrica", "calculo": "p_{man}=870\\times9{,}8\\times3{,}0=25\\,578\\ \\text{Pa}\\approx25{,}6\\ \\text{kPa}", "porque": "Substituímos $\\rho$, $g$ e $h$ (unidades do SI)."}, {"titulo": "Pressão absoluta", "calculo": "p_{abs}=p_{atm}+p_{man}=101\\,300+25\\,578=126\\,878\\ \\text{Pa}\\approx126{,}9\\ \\text{kPa}", "porque": "Somamos a atmosfera que atua na superfície do óleo."}, {"titulo": "Em bar (como no campo)", "calculo": "25\\,578\\ \\text{Pa}=0{,}256\\ \\text{bar}\\quad;\\quad126\\,878\\ \\text{Pa}=1{,}27\\ \\text{bar}", "porque": "Sensor <b>manométrico<\/b> lê 0,26 bar; sensor <b>absoluto<\/b> lê 1,27 bar."}], "resposta": "$p_{man}\\approx25{,}6\\ \\text{kPa}$ e $p_{abs}\\approx126{,}9\\ \\text{kPa}$"}, {"titulo": "Exemplo 3 — Pascal: prensa hidráulica", "enunciado": "Aplica-se <b>150 N<\/b> ao êmbolo menor (<b>20 cm²<\/b>); o maior tem <b>400 cm²<\/b>. Calcule a pressão no fluido, a força no êmbolo maior, a massa sustentada e quanto o êmbolo menor deve descer para o maior subir <b>5 cm<\/b>.", "passos": [{"titulo": "Pressão no fluido", "calculo": "p=\\frac{F_1}{A_1}=\\frac{150}{2{,}0\\times10^{-3}}=75\\,000\\ \\text{Pa}=75\\ \\text{kPa}", "porque": "Pressão = força ÷ área (em m²: $20\\ \\text{cm}^2=2{,}0\\times10^{-3}\\ \\text{m}^2$). Pascal: é a mesma em todo o fluido."}, {"titulo": "Força no êmbolo maior", "calculo": "\\frac{F_1}{A_1}=\\frac{F_2}{A_2}\\;\\Rightarrow\\;F_2=p\\,A_2=75\\,000\\times0{,}040=3\\,000\\ \\text{N}", "porque": "Mesma pressão em área maior gera força maior."}, {"titulo": "Ganho mecânico e massa", "calculo": "\\frac{F_2}{F_1}=\\frac{A_2}{A_1}=20\\quad;\\quad m=\\frac{F_2}{g}=\\frac{3\\,000}{9{,}8}\\approx306\\ \\text{kg}", "porque": "O ganho é a razão das áreas: 150 N sustentam cerca de 306 kg."}, {"titulo": "Deslocamento", "calculo": "A_1d_1=A_2d_2\\;\\Rightarrow\\;d_1=d_2\\,\\frac{A_2}{A_1}=5\\times20=100\\ \\text{cm}", "porque": "O fluido é incompressível: o volume que sai do cilindro 1 entra no 2."}, {"titulo": "Conferir a energia", "calculo": "W_1=150\\times1{,}00=150\\ \\text{J}\\quad;\\quad W_2=3\\,000\\times0{,}05=150\\ \\text{J}", "porque": "Não se ganha energia: <b>ganha-se força, perde-se curso<\/b>."}], "resposta": "$p=75\\ \\text{kPa}$; $F_2=3\\,000\\ \\text{N}$; $m\\approx306\\ \\text{kg}$; $d_1=1{,}0\\ \\text{m}$"}, {"titulo": "Exemplo 4 — Arquimedes: flutuador de sensor de nível", "enunciado": "Flutuador de massa <b>0,80 kg<\/b> e volume <b>2,0 L<\/b> em água. (a) Flutua? (b) Que fração do volume fica submersa? (c) Que força para baixo o mantém totalmente submerso?", "passos": [{"titulo": "Comparar densidades", "calculo": "\\rho_c=\\frac{m}{V}=\\frac{0{,}80}{2{,}0\\times10^{-3}}=400\\ \\text{kg/m}^3<1\\,000\\;\\Rightarrow\\;\\text{flutua}", "porque": "Se $\\rho_c<\\rho_f$, o empuxo máximo supera o peso."}, {"titulo": "Equilíbrio flutuando", "calculo": "E=P\\;\\Rightarrow\\;\\rho_fV_{sub}g=mg\\;\\Rightarrow\\;V_{sub}=\\frac{m}{\\rho_f}=8{,}0\\times10^{-4}\\ \\text{m}^3", "porque": "Em repouso a resultante é nula: empuxo = peso. O $g$ se cancela."}, {"titulo": "Fração submersa", "calculo": "\\frac{V_{sub}}{V}=\\frac{\\rho_c}{\\rho_f}=\\frac{400}{1\\,000}=0{,}40=40\\%", "porque": "A fração submersa é a razão entre as densidades."}, {"titulo": "Empuxo máximo e peso", "calculo": "E_{max}=1\\,000\\times2{,}0\\times10^{-3}\\times9{,}8=19{,}6\\ \\text{N}\\quad;\\quad P=0{,}80\\times9{,}8=7{,}84\\ \\text{N}", "porque": "Totalmente submerso: $V_{desl}=V$."}, {"titulo": "Força para afundar", "calculo": "E=P+F\\;\\Rightarrow\\;F=19{,}6-7{,}84=11{,}76\\ \\text{N}", "porque": "Diagrama de forças: $E$ para cima; $P$ e $F$ para baixo."}], "resposta": "Flutua; 40 % submerso; $F=11{,}76\\ \\text{N}$"}, {"titulo": "Exemplo 5 — Continuidade: redução de diâmetro em mangueira", "enunciado": "Óleo escoa em mangueira de <b>25 mm<\/b> a <b>2 m/s<\/b> e passa a um bico de <b>10 mm<\/b>. Calcule a vazão e a velocidade no bico.", "passos": [{"titulo": "Áreas das seções", "calculo": "A=\\frac{\\pi D^2}{4}\\;\\Rightarrow\\;A_1=4{,}909\\times10^{-4}\\ \\text{m}^2\\;;\\;A_2=7{,}854\\times10^{-5}\\ \\text{m}^2", "porque": "Seção circular; converta mm → m antes ($0{,}025^2=6{,}25\\times10^{-4}$)."}, {"titulo": "Vazão", "calculo": "Q=A_1v_1=4{,}909\\times10^{-4}\\times2=9{,}82\\times10^{-4}\\ \\text{m}^3/\\text{s}\\approx0{,}98\\ \\text{L/s}", "porque": "Vazão = área × velocidade ($1\\ \\text{m}^3/\\text{s}=1\\,000\\ \\text{L/s}$)."}, {"titulo": "Continuidade", "calculo": "A_1v_1=A_2v_2\\;\\Rightarrow\\;v_2=\\frac{A_1v_1}{A_2}=\\frac{4{,}909\\times10^{-4}\\times2}{7{,}854\\times10^{-5}}=12{,}5\\ \\text{m/s}", "porque": "Conservação de massa: a mesma vazão passa pela seção menor."}, {"titulo": "Conferência rápida", "calculo": "v_2=v_1\\left(\\frac{D_1}{D_2}\\right)^2=2\\times(2{,}5)^2=12{,}5\\ \\text{m/s}", "porque": "Como $A\\propto D^2$, diâmetro 2,5× menor → velocidade 6,25× maior."}], "resposta": "$Q\\approx0{,}98\\ \\text{L/s}$ e $v_2=12{,}5\\ \\text{m/s}$"}, {"titulo": "Exemplo 6 — Bernoulli: pressão após estreitamento e subida", "enunciado": "Água em tubo que sobe <b>5,0 m<\/b> e estreita de <b>100 mm<\/b> para <b>50 mm<\/b>. Em ①: $p_1=200\\ \\text{kPa}$, $v_1=2{,}0\\ \\text{m/s}$, $h_1=0$. Calcule $v_2$ e $p_2$ em ②. ($\\rho=1\\,000\\ \\text{kg/m}^3$)", "passos": [{"titulo": "Continuidade", "calculo": "v_2=v_1\\left(\\frac{D_1}{D_2}\\right)^2=2{,}0\\times2^2=8{,}0\\ \\text{m/s}", "porque": "A área cai 4× (diâmetro pela metade), a velocidade sobe 4×."}, {"titulo": "Bernoulli isolando $p_2$", "calculo": "p_2=p_1+\\tfrac12\\rho\\,(v_1^2-v_2^2)+\\rho g\\,(h_1-h_2)", "porque": "Bernoulli entre ① e ②, isolando a incógnita."}, {"titulo": "Calcular cada termo", "calculo": "\\begin{aligned}\\tfrac12\\rho(v_1^2-v_2^2)&=500\\,(4-64)=-30\\,000\\ \\text{Pa}\\\\\\rho g(h_1-h_2)&=1\\,000\\times9{,}8\\times(0-5{,}0)=-49\\,000\\ \\text{Pa}\\end{aligned}", "porque": "Separar os termos mostra de onde vem a queda de pressão."}, {"titulo": "Pressão em ②", "calculo": "p_2=200\\,000-30\\,000-49\\,000=121\\,000\\ \\text{Pa}=121\\ \\text{kPa}", "porque": "A pressão caiu 79 kPa: 30 kPa porque o fluido acelerou e 49 kPa porque subiu 5 m."}], "resposta": "$v_2=8{,}0\\ \\text{m/s}$ e $p_2=121\\ \\text{kPa}$"}, {"titulo": "Exemplo 7 — Venturi: vazão de água em tubulação industrial", "enunciado": "Medidor Venturi (entrada <b>100 mm<\/b>, garganta <b>50 mm<\/b>) em tubulação de <b>água<\/b>. Manômetro em U com <b>mercúrio<\/b> ligado entre ① e ② indica <b>h = 20 cm<\/b>. Calcule $v_2$ e a vazão $Q$. ($\\rho_{Hg}=13\\,600\\ \\text{kg/m}^3$)", "passos": [{"titulo": "Áreas e fator geométrico", "calculo": "\\begin{aligned}A_1&=\\frac{\\pi(0{,}100)^2}{4}=7{,}854\\times10^{-3}\\ \\text{m}^2\\\\A_2&=\\frac{\\pi(0{,}050)^2}{4}=1{,}963\\times10^{-3}\\ \\text{m}^2\\\\ \\frac{A_2}{A_1}&=0{,}25\\;\\Rightarrow\\;1-0{,}25^2=0{,}9375\\end{aligned}", "porque": "O fator $1-(A_2/A_1)^2$ depende só da geometria do medidor."}, {"titulo": "Diferença de pressão", "calculo": "\\Delta p=(\\rho_{Hg}-\\rho)\\,g\\,h=12\\,600\\times9{,}8\\times0{,}20=24\\,696\\ \\text{Pa}", "porque": "No manômetro em U a água ocupa parte da coluna: vale a diferença $\\rho_{Hg}-\\rho_{água}$."}, {"titulo": "Velocidade na garganta", "calculo": "v_2=\\sqrt{\\frac{2\\times24\\,696}{1\\,000\\times0{,}9375}}=\\sqrt{52{,}69}=7{,}26\\ \\text{m/s}", "porque": "Fórmula deduzida: $v_2$ a partir de $\\Delta p$."}, {"titulo": "Vazão", "calculo": "Q=A_2v_2=1{,}963\\times10^{-3}\\times7{,}26=1{,}425\\times10^{-2}\\ \\text{m}^3/\\text{s}=14{,}3\\ \\text{L/s}", "porque": "Vazão = área da garganta × velocidade na garganta."}, {"titulo": "Conferir", "calculo": "v_1=\\frac{Q}{A_1}=1{,}81\\ \\text{m/s}\\approx\\frac{7{,}26}{4}\\ \\checkmark\\quad;\\quad Q\\approx51{,}3\\ \\text{m}^3/\\text{h}", "porque": "Pela continuidade $v_1=v_2A_2/A_1$. Em campo a vazão costuma vir em m³/h."}], "resposta": "$v_2\\approx7{,}26\\ \\text{m/s}$ e $Q\\approx14{,}3\\ \\text{L/s}\\approx51\\ \\text{m}^3/\\text{h}$"}, {"titulo": "Exemplo 8 — Sucção pneumática: peso máximo na ventosa", "enunciado": "Aspirador tipo Venturi: ar entra a <b>5 m/s<\/b> à pressão atmosférica e acelera a <b>100 m/s<\/b> na garganta. A ventosa ligada à garganta tem <b>40 mm<\/b> de diâmetro. Estime o vácuo e a massa máxima sustentada (modelo ideal; $\\rho_{ar}=1{,}2\\ \\text{kg/m}^3$).", "passos": [{"titulo": "Bernoulli na horizontal", "calculo": "p_1+\\tfrac12\\rho v_1^2=p_2+\\tfrac12\\rho v_2^2\\;\\Rightarrow\\;p_1-p_2=\\tfrac12\\rho\\,(v_2^2-v_1^2)", "porque": "O termo $\\rho g h$ cancela: a queda de pressão vem só da aceleração."}, {"titulo": "Vácuo na garganta", "calculo": "\\Delta p=\\tfrac12(1{,}2)(100^2-5^2)=0{,}6\\times9\\,975=5\\,985\\ \\text{Pa}\\approx6{,}0\\ \\text{kPa}", "porque": "A garganta fica 6 kPa abaixo da atmosfera: é o vácuo disponível."}, {"titulo": "Força na ventosa", "calculo": "A=\\frac{\\pi(0{,}040)^2}{4}=1{,}257\\times10^{-3}\\ \\text{m}^2\\quad;\\quad F=\\Delta p\\,A\\approx7{,}5\\ \\text{N}", "porque": "A atmosfera empurra a peça de um lado, o vácuo do outro: força = diferença de pressão × área."}, {"titulo": "Massa máxima", "calculo": "m_{max}=\\frac{F}{g}=\\frac{7{,}5}{9{,}8}\\approx0{,}77\\ \\text{kg}", "porque": "No limite $F=P=mg$. Em projeto use coeficiente de segurança ($\\ge2$): cerca de 0,38 kg."}], "resposta": "$\\Delta p\\approx6{,}0\\ \\text{kPa}$; $F\\approx7{,}5\\ \\text{N}$; $m_{max}\\approx0{,}77\\ \\text{kg}$"}, {"titulo": "Atividade proposta 1 — Stevin", "enunciado": "Sensor <b>absoluto<\/b> no fundo de tanque aberto de óleo hidráulico ($870\\ \\text{kg/m}^3$) indica <b>150 kPa<\/b>. Qual a altura do óleo? ($p_{atm}=101{,}3\\ \\text{kPa}$) <i>Tente antes de abrir a resolução.<\/i>", "passos": [{"titulo": "Pressão manométrica", "calculo": "p_{man}=p_{abs}-p_{atm}=150-101{,}3=48{,}7\\ \\text{kPa}", "porque": "Stevin usa a pressão <b>manométrica<\/b> ($\\rho g h$)."}, {"titulo": "Altura", "calculo": "h=\\frac{p_{man}}{\\rho g}=\\frac{48\\,700}{870\\times9{,}8}\\approx5{,}7\\ \\text{m}", "porque": "Isolamos $h$ em $p_{man}=\\rho g h$."}], "resposta": "$h\\approx5{,}7\\ \\text{m}$"}, {"titulo": "Atividade proposta 2 — Pascal", "enunciado": "Prensa com êmbolos de <b>4 cm<\/b> e <b>20 cm<\/b> de diâmetro deve erguer <b>4 000 N<\/b>. Qual a força no êmbolo menor? Quanto ele desce para o maior subir 2 cm?", "passos": [{"titulo": "Razão das áreas", "calculo": "\\frac{A_2}{A_1}=\\left(\\frac{D_2}{D_1}\\right)^2=\\left(\\frac{20}{4}\\right)^2=25", "porque": "A ∝ D²."}, {"titulo": "Força no êmbolo menor", "calculo": "F_1=\\frac{F_2}{A_2/A_1}=\\frac{4\\,000}{25}=160\\ \\text{N}", "porque": "Pascal: $F_1/A_1=F_2/A_2$."}, {"titulo": "Deslocamento", "calculo": "d_1=d_2\\,\\frac{A_2}{A_1}=2\\times25=50\\ \\text{cm}", "porque": "Volume deslocado igual nos dois cilindros."}], "resposta": "$F_1=160\\ \\text{N}$ e $d_1=50\\ \\text{cm}$"}, {"titulo": "Atividade proposta 3 — Continuidade + Bernoulli", "enunciado": "Água em tubo horizontal passa de <b>80 mm<\/b> para <b>40 mm<\/b>. Em ①: $v_1=1{,}5\\ \\text{m/s}$ e $p_1=180\\ \\text{kPa}$. Calcule $v_2$ e $p_2$.", "passos": [{"titulo": "Velocidade em ②", "calculo": "v_2=v_1\\left(\\frac{D_1}{D_2}\\right)^2=1{,}5\\times4=6{,}0\\ \\text{m/s}", "porque": "Continuidade."}, {"titulo": "Bernoulli horizontal", "calculo": "p_2=p_1+\\tfrac12\\rho\\,(v_1^2-v_2^2)=180\\,000+500\\,(1{,}5^2-6^2)", "porque": "$h_1=h_2$: só pressão e velocidade."}, {"titulo": "Resultado", "calculo": "p_2=180\\,000-16\\,875=163\\,125\\ \\text{Pa}\\approx163{,}1\\ \\text{kPa}", "porque": "Estreitou → acelerou → pressão caiu."}], "resposta": "$v_2=6{,}0\\ \\text{m/s}$ e $p_2\\approx163{,}1\\ \\text{kPa}$"}, {"titulo": "Atividade proposta 4 — Venturi", "enunciado": "Medidor Venturi em água ($D_1=80\\ \\text{mm}$, $D_2=40\\ \\text{mm}$). Dois piezômetros mostram $\\Delta h=0{,}50\\ \\text{m}$. Calcule a vazão.", "passos": [{"titulo": "Diferença de pressão", "calculo": "\\Delta p=\\rho g\\Delta h=1\\,000\\times9{,}8\\times0{,}50=4\\,900\\ \\text{Pa}", "porque": "Piezômetros: coluna do próprio fluido."}, {"titulo": "Fator geométrico e área da garganta", "calculo": "\\frac{A_2}{A_1}=\\left(\\frac{40}{80}\\right)^2=0{,}25\\Rightarrow0{,}9375\\quad;\\quad A_2=\\frac{\\pi(0{,}040)^2}{4}=1{,}257\\times10^{-3}\\ \\text{m}^2", "porque": "Mesma geometria do exemplo 7."}, {"titulo": "Velocidade na garganta", "calculo": "v_2=\\sqrt{\\frac{2\\times4\\,900}{1\\,000\\times0{,}9375}}=3{,}23\\ \\text{m/s}", "porque": "Fórmula do Venturi."}, {"titulo": "Vazão", "calculo": "Q=A_2v_2=1{,}257\\times10^{-3}\\times3{,}23\\approx4{,}06\\times10^{-3}\\ \\text{m}^3/\\text{s}=4{,}06\\ \\text{L/s}\\approx14{,}6\\ \\text{m}^3/\\text{h}", "porque": "Área × velocidade na garganta."}], "resposta": "$Q\\approx4{,}06\\ \\text{L/s}$"}]};
+const TURMAS = {"instituicao": "SENAI", "setor": "Coordenação Pedagógica", "cursos": [{"id": "ai", "nome": "Tecnólogo em Automação Industrial", "turmas": [{"id": "ai3", "nome": "3º Período", "docente": "Prof. Marcos Monteiro"}, {"id": "ai1", "nome": "1º Período", "docente": "Prof. Marcos Monteiro"}]}, {"id": "pq", "nome": "Tecnólogo em Processos Químicos", "turmas": [{"id": "pq3", "nome": "3º Período", "docente": "Prof. Marcos Monteiro"}, {"id": "pq1", "nome": "1º Período", "docente": "Prof. Marcos Monteiro"}]}]};
+
+const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const $ = id => document.getElementById(id);
+const store = { get(k){ try{return localStorage.getItem(k)}catch(e){return null} }, set(k,v){ try{localStorage.setItem(k,v)}catch(e){} } };
+const key = 'apoio-' + (SPEC.tipo || 'x');
+
+function typeset(el){ if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise(el ? [el] : undefined).catch(()=>{}); }
+
+/* ---------- Curso / turma ---------- */
+function curso(){ return TURMAS.cursos.find(c => c.id === $('sel-curso').value) || TURMAS.cursos[0]; }
+function turma(){ const c = curso(); return c.turmas.find(t => t.id === $('sel-turma').value) || c.turmas[0]; }
+
+function preencherTurmas(preferida){
+  const c = curso(), s = $('sel-turma');
+  s.innerHTML = c.turmas.map(t => `<option value="${esc(t.id)}">${esc(t.nome)}</option>`).join('');
+  if (preferida && c.turmas.some(t => t.id === preferida)) s.value = preferida;
+}
+
+function atualizarCabecalho(){
+  const c = curso(), t = turma();
+  store.set(key + '-curso', c.id); store.set(key + '-turma', t.id);
+  $('h-titulo').textContent = SPEC.titulo;
+  $('h-sub').textContent = SPEC.subtitulo.replace('{curso}', c.nome);
+  $('h-tag').textContent = (t.docente || SPEC.docente || '') + ' · ' + t.nome;
+  const campos = [
+    ['Curso', c.nome], ['Turma', t.nome], ['Docente', t.docente || SPEC.docente || ''],
+    ['Disciplina', SPEC.disciplina || ''], ['Referência', SPEC.referencia || ''], ['Aula', SPEC.aula || '']
+  ].filter(x => x[1]);
+  $('info').innerHTML = campos.map(x => `<div><b>${esc(x[0])}</b>${esc(x[1])}</div>`).join('');
+  document.title = `${SPEC.titulo} — ${t.nome}`;
+}
+
+function iniciarSeletor(){
+  $('sel-curso').innerHTML = TURMAS.cursos.map(c => `<option value="${esc(c.id)}">${esc(c.nome)}</option>`).join('');
+  const q = new URLSearchParams(location.search);
+  const cs = q.get('curso') || store.get(key + '-curso');
+  if (cs && TURMAS.cursos.some(c => c.id === cs)) $('sel-curso').value = cs;
+  preencherTurmas(q.get('turma') || store.get(key + '-turma'));
+  $('sel-curso').addEventListener('change', () => { preencherTurmas(); atualizarCabecalho(); });
+  $('sel-turma').addEventListener('change', atualizarCabecalho);
+  if (TURMAS.cursos.length === 1 && TURMAS.cursos[0].turmas.length === 1) $('seletor').style.display = 'none';
+  atualizarCabecalho();
+}
+
+/* ---------- Teoria (formulário, deduções) ---------- */
+function renderTeoria(){
+  $('teoria').innerHTML = (SPEC.teoria || []).map(b => b.recolhivel
+    ? `<details class="bloco"><summary>${esc(b.titulo)}</summary><div>${b.html}</div></details>`
+    : `<div class="bloco"><h2>${esc(b.titulo)}</h2>${b.html}</div>`).join('');
+}
+
+/* ---------- Atividades passo a passo ---------- */
+function renderExercicios(){
+  $('exercicios').innerHTML = SPEC.exercicios.map((ex, i) => {
+    const id = 'ex' + (i + 1), n = ex.passos.length;
+    const passos = ex.passos.map((p, j) => `
+      <div class="passo" id="${id}-passo-${j+1}">
+        <span class="passo-n">${j+1}</span><span class="passo-t">${esc(p.titulo)}</span>
+        <div class="calc">${p.calculo ? '$$' + esc(p.calculo) + '$$' : ''}</div>
+        ${p.porque ? `<div class="explicacao"><strong>Por que fazemos isso:</strong> ${p.porque}</div>` : ''}
+      </div>`).join('');
+    return `
+    <section class="exercise-card" id="${id}">
+      <h3>${esc(ex.titulo)}</h3>
+      <div class="enunciado">${ex.enunciado}</div>
+      <div class="controle" id="${id}-controle">
+        <button class="btn" id="${id}-btn-topo" onclick="iniciar('${id}',${n})">▶ Ver resolução passo a passo</button>
+        <span class="progresso" id="${id}-progresso"></span>
+      </div>
+      <div id="${id}-passos">${passos}
+        <div class="resposta" id="${id}-resposta"><strong>✅ Resposta final:</strong> ${ex.resposta}</div>
+      </div>
+    </section>`;
+  }).join('');
+  $('rodape').textContent = SPEC.rodape || '';
+}
+
+function iniciar(id, n){ $(id + '-btn-topo').style.display = 'none'; revelar(id, n, 1); }
+
+function revelar(id, n, k){
+  const passo = $(`${id}-passo-${k}`);
+  passo.style.display = 'block';
+  const antigo = passo.parentElement.querySelector('.nav-inline'); if (antigo) antigo.remove();
+  const nav = document.createElement('div'); nav.className = 'nav-inline';
+  if (k < n) {
+    nav.innerHTML = `<button class="btn" onclick="revelar('${id}',${n},${k+1})">▶ Próximo passo (${k+1} de ${n})</button>`;
+  } else {
+    $(id + '-resposta').style.display = 'block';
+    nav.innerHTML = `<button class="btn sec" onclick="reiniciar('${id}',${n})">🔄 Reiniciar resolução</button>`;
+  }
+  // o botão fica DENTRO do passo atual: não precisa rolar para avançar
+  passo.appendChild(nav);
+  // remove o botão do passo anterior
+  if (k > 1) { const ant = $(`${id}-passo-${k-1}`).querySelector('.nav-inline'); if (ant) ant.remove(); }
+  $(id + '-progresso').textContent = `Passo ${k} de ${n}`;
+  typeset(passo); if (k === n) typeset($(id + '-resposta'));
+  passo.scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+
+function reiniciar(id, n){
+  for (let k = 1; k <= n; k++) { const p = $(`${id}-passo-${k}`); p.style.display = 'none'; const nv = p.querySelector('.nav-inline'); if (nv) nv.remove(); }
+  $(id + '-resposta').style.display = 'none';
+  $(id + '-progresso').textContent = '';
+  $(id + '-btn-topo').style.display = '';
+  $(id).scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+iniciarSeletor(); renderTeoria(); renderExercicios();
+window.addEventListener('load', () => typeset());
+</script>
+<script>
+
+(function(){
+const hooks={};function reg(id,o){hooks[id]=o}
+const MAP={'s-stevin':'cv_stevin','s-pascal':'cv_pascal','s-arq':'cv_arq','s-cont':'cv_cont','s-simb':'cv_bern','s-simv':'cv_simv','s-ejet':'cv_ejet'};
+const $=id=>document.getElementById(id);
+const G=9.8,PATM=101300;
+const SUPD={'0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','6':'⁶','7':'⁷','8':'⁸','9':'⁹','-':'⁻'};
+function fmt(v,d=1,grp=true){const neg=v<0&&Math.abs(v)>=Math.pow(10,-d)/2;let s=Math.abs(v).toFixed(d);let [i,f]=s.split('.');if(grp)i=i.replace(/\B(?=(\d{3})+(?!\d))/g,' ');return(neg?'−':'')+i+(f?','+f:'')}
+function sci(v,d=2){if(v===0)return'0';const e=Math.floor(Math.log10(Math.abs(v)));const m=v/Math.pow(10,e);return fmt(m,d,false)+' × 10'+String(e).split('').map(c=>SUPD[c]).join('')}
+function clamp(v,a,b){return Math.max(a,Math.min(b,v))}
+function updOut(inp){const o=$(inp.id+'o');if(o)o.textContent=fmt(+inp.value,+inp.dataset.d,false)+' '+inp.dataset.u}
+document.querySelectorAll('input[type=range]').forEach(inp=>{updOut(inp);inp.addEventListener('input',()=>updOut(inp));inp.addEventListener('change',()=>inp.blur());inp.addEventListener('pointerup',()=>inp.blur())});
+function seg(id,cb){document.querySelectorAll('#'+id+' button').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('#'+id+' button').forEach(q=>q.classList.toggle('on',q===b));cb(b);b.blur()}))}
+function rows(a){return a.map(r=>'<span>'+r[0]+'</span><span>'+r[1]+'</span>').join('')}
+
+/* ============ canvas helpers ============ */
+function setup(id){const c=$(id),w=+c.dataset.w,h=+c.dataset.h,r=2;c.width=w*r;c.height=h*r;c.style.width='';c.style.height='';const x=c.getContext('2d');x.setTransform(r,0,0,r,0,0);return{c,x,w,h}}
+function arrow(x,x1,y1,x2,y2,col,lw,hd){hd=hd||14;lw=lw||5;const a=Math.atan2(y2-y1,x2-x1);x.strokeStyle=col;x.fillStyle=col;x.lineWidth=lw;x.lineCap='round';x.setLineDash([]);x.beginPath();x.moveTo(x1,y1);x.lineTo(x2-Math.cos(a)*hd*.6,y2-Math.sin(a)*hd*.6);x.stroke();x.beginPath();x.moveTo(x2,y2);x.lineTo(x2-hd*Math.cos(a-.45),y2-hd*Math.sin(a-.45));x.lineTo(x2-hd*Math.cos(a+.45),y2-hd*Math.sin(a+.45));x.closePath();x.fill()}
+function T(x,s,px,py,size,col,al,w){
+  w=w||'700';const f=sz=>w+' '+sz+'px "Segoe UI",system-ui,sans-serif';
+  const parts=s.split(/(_\{[^}]*\})/).filter(Boolean).map(t=>t.indexOf('_{')===0?{t:t.slice(2,-1),sub:1}:{t:t,sub:0});
+  let tot=0;parts.forEach(p=>{x.font=f(p.sub?size*.66:size);p.w=x.measureText(p.t).width;tot+=p.w});
+  let cx=px;if(al==='center')cx=px-tot/2;else if(al==='right')cx=px-tot;
+  x.fillStyle=col||'#0f172a';x.textAlign='left';x.textBaseline='alphabetic';
+  parts.forEach(p=>{x.font=f(p.sub?size*.66:size);x.fillText(p.t,cx,py+(p.sub?size*.22:0));cx+=p.w});
+}
+function dash(x,a,b){x.setLineDash([a,b])}
+const CP='#2563eb',CK='#16a34a',CU='#ea580c';
+/* ============ SIM 1: Stevin ============ */
+(function(){
+  const C=setup('cv_stevin'),x=C.x;
+  const FL={agua:{r:1000,col:'#93c5fd'},oleo:{r:870,col:'#fcd34d'},hg:{r:13600,col:'#cbd5e1'}};
+  let fk='agua',last='';
+  seg('st_fl',b=>{fk=b.dataset.f});
+  function draw(){
+    const f=FL[fk],H=+$('st_h').value,k=116,ys=110,yb=ys+5*k;
+    const pman=f.r*G*H,pabs=PATM+pman,pmax=PATM+f.r*G*5;
+    x.clearRect(0,0,1080,740);
+    x.fillStyle=f.col;x.fillRect(80,ys,480,yb-ys);
+    x.strokeStyle='#334155';x.lineWidth=10;x.lineJoin='round';x.setLineDash([]);x.beginPath();x.moveTo(75,60);x.lineTo(75,yb+5);x.lineTo(565,yb+5);x.lineTo(565,60);x.stroke();
+    for(let i=0;i<5;i++)arrow(x,125+i*90,44,125+i*90,ys-8,'#64748b',5,13);
+    T(x,'p₀ = pressão atmosférica',320,30,24,'#475569','center');
+    const sx=320,sy=ys+H*k;
+    dash(x,8,6);x.strokeStyle='#0f172a';x.lineWidth=2;
+    x.beginPath();x.moveTo(110,ys);x.lineTo(sx-30,ys);x.stroke();x.beginPath();x.moveTo(110,sy);x.lineTo(sx-30,sy);x.stroke();x.setLineDash([]);
+    if(H>0.15){arrow(x,130,(ys+sy)/2,130,ys+1,'#0f172a',3,10);arrow(x,130,(ys+sy)/2,130,sy-1,'#0f172a',3,10);
+      T(x,'h = '+fmt(H,1)+' m',146,(ys+sy)/2+9,26,'#0f172a','left')}
+    const L=22+44*(pabs/pmax);
+    for(let a=0;a<8;a++){const an=a*Math.PI/4;arrow(x,sx+Math.cos(an)*(30+L),sy+Math.sin(an)*(30+L),sx+Math.cos(an)*31,sy+Math.sin(an)*31,'#dc2626',5,11)}
+    x.beginPath();x.arc(sx,sy,26,0,7);x.fillStyle='#fff';x.fill();x.strokeStyle='#0f172a';x.lineWidth=4;x.stroke();
+    T(x,'p',sx,sy+9,26,'#0f172a','center');
+    const bx=710,bw=110,sc2=(yb-ys)/pmax,hA=PATM*sc2,hM=pman*sc2;
+    T(x,'Pressão absoluta no sensor',765,ys-48,24,'#075985','center');
+    x.fillStyle='#94a3b8';x.fillRect(bx,yb-hA,bw,hA);x.fillStyle=CP;x.fillRect(bx,yb-hA-hM,bw,hM);
+    x.strokeStyle='#334155';x.lineWidth=4;x.strokeRect(bx,ys,bw,yb-ys);
+    T(x,'p₀ = '+fmt(PATM/1000,1)+' kPa',bx+bw+12,yb-hA/2+8,24,'#475569','left');
+    const ty=Math.max(yb-hA-hM-12,ys+22);
+    T(x,'p = '+fmt(pabs/1000,1)+' kPa',bx+bw+12,ty,28,'#0f172a','left');
+    if(H>0.05)T(x,'ρgh = '+fmt(pman/1000,1)+' kPa',bx+bw+12,Math.min(ty+36,yb-hA-6),24,CP,'left');
+    const s='p<sub>man</sub> = ρ·g·h = '+fmt(f.r,0)+' × 9,8 × '+fmt(H,1)+' = <b>'+fmt(pman,0)+' Pa</b><br>p<sub>abs</sub> = p₀ + ρ·g·h = <b>'+fmt(pabs/1000,1)+' kPa</b>';
+    if(s!==last){$('st_out').innerHTML=s;last=s}
+  }
+  reg('s-stevin',{tick:draw,enter:draw});
+})();
+
+/* ============ SIM 2: Pascal ============ */
+(function(){
+  const C=setup('cv_pascal'),x=C.x;let last='';
+  function draw(){
+    const F1=+$('pa_f').value,A1=+$('pa_a1').value,A2=+$('pa_a2').value,d1=+$('pa_d').value;
+    const p=F1/(A1*1e-4),F2=p*A2*1e-4,d2=d1*A1/A2;
+    const k=4,w1=14*Math.sqrt(A1),w2=14*Math.sqrt(A2),cx1=190,cx2=720;
+    const y0=400,y1=y0+d1*k,y2=y0-d2*k,yTop=290,yBot=650,yCh=585,th=22,rod=250;
+    x.clearRect(0,0,1080,740);
+    x.fillStyle='#fcd34d';
+    x.fillRect(cx1-w1/2,y1+th,w1,yBot-(y1+th));
+    x.fillRect(cx1-w1/2,yCh,(cx2+w2/2)-(cx1-w1/2),yBot-yCh);
+    x.fillRect(cx2-w2/2,y2+th,w2,yBot-(y2+th));
+    x.strokeStyle='#334155';x.lineWidth=10;x.lineJoin='miter';x.setLineDash([]);
+    x.beginPath();x.moveTo(cx1-w1/2-5,yTop);x.lineTo(cx1-w1/2-5,yBot+5);x.lineTo(cx2+w2/2+5,yBot+5);x.lineTo(cx2+w2/2+5,yTop);x.stroke();
+    x.beginPath();x.moveTo(cx1+w1/2+5,yTop);x.lineTo(cx1+w1/2+5,yCh-5);x.lineTo(cx2-w2/2-5,yCh-5);x.lineTo(cx2-w2/2-5,yTop);x.stroke();
+    dash(x,8,6);x.strokeStyle='#64748b';x.lineWidth=2;
+    x.beginPath();x.moveTo(cx2-w2/2-14,y0);x.lineTo(cx2+w2/2+14,y0);x.stroke();
+    x.beginPath();x.moveTo(cx1-w1/2-14,y0);x.lineTo(cx1+w1/2+14,y0);x.stroke();x.setLineDash([]);
+    // êmbolo 1 + haste + cabo
+    x.fillStyle='#475569';x.fillRect(cx1-w1/2,y1,w1,th);x.fillRect(cx2-w2/2,y2,w2,th);
+    x.strokeStyle='#475569';x.lineWidth=14;x.beginPath();x.moveTo(cx1,y1);x.lineTo(cx1,y1-rod);x.stroke();
+    const hy=y1-rod-14;x.fillStyle='#475569';x.fillRect(cx1-44,hy,88,14);
+    const len=24+F1/500*70;
+    arrow(x,cx1,hy-4-len,cx1,hy-4,'#dc2626',8,20);
+    T(x,'F₁ = '+fmt(F1,0)+' N',cx1,hy-4-len-10,28,'#b91c1c','center');
+    // carga no êmbolo 2
+    const bw=Math.min(w2*.8,320);
+    x.fillStyle='#64748b';x.fillRect(cx2-bw/2,y2-90,bw,90);
+    T(x,'carga',cx2,y2-36,28,'#fff','center');
+    const len2=30+34*Math.log10(Math.max(F2,10)/10);
+    arrow(x,cx2+bw/2+34,y2+8,cx2+bw/2+34,y2+8-len2,'#15803d',8,20);
+    T(x,'F₂ = '+fmt(F2,0)+' N',cx2,y2-90-14,28,'#15803d','center');
+    [-w1/4,w1/4].forEach(o=>arrow(x,cx1+o,y1+th+46,cx1+o,y1+th+8,'#1d4ed8',4,10));
+    [-w2/3,0,w2/3].forEach(o=>arrow(x,cx2+o,y2+th+46,cx2+o,y2+th+8,'#1d4ed8',4,10));
+    if(d1>0){arrow(x,cx1-w1/2-34,y0,cx1-w1/2-34,y1,'#0f172a',3,9);T(x,'d₁',cx1-w1/2-46,(y0+y1)/2+8,26,'#0f172a','right')}
+    if(y0-y2>4){arrow(x,cx2+w2/2+24,y0,cx2+w2/2+24,y2,'#0f172a',3,9);T(x,'d₂',cx2+w2/2+36,(y0+y2)/2+8,26,'#0f172a','left')}
+    T(x,'A₁ = '+fmt(A1,0)+' cm²',cx1,688,26,'#334155','center');
+    T(x,'A₂ = '+fmt(A2,0)+' cm²',cx2,688,26,'#334155','center');
+    T(x,'p = F₁/A₁ = '+fmt(p/1000,0)+' kPa — a mesma em todos os pontos do fluido',540,728,26,'#78350f','center');
+    const s=rows([['Pressão no fluido, p = F₁/A₁',fmt(p/1000,0)+' kPa'],['Força no êmbolo maior, F₂',fmt(F2,0)+' N'],['Ganho de força, A₂/A₁',fmt(A2/A1,1)+' ×'],['Sobe o êmbolo maior, d₂',fmt(d2,2)+' cm'],['Trabalho W₁ = F₁·d₁',fmt(F1*d1/100,1)+' J'],['Trabalho W₂ = F₂·d₂',fmt(F2*d2/100,1)+' J'],['Massa sustentada, F₂/g',fmt(F2/G,0)+' kg']]);
+    if(s!==last){$('pa_out').innerHTML=s;last=s}
+  }
+  reg('s-pascal',{tick:draw,enter:draw});
+})();
+
+/* ============ SIM 3: Arquimedes ============ */
+(function(){
+  const C=setup('cv_arq'),x=C.x;let rf=1000,fname='Água',by=null,last='';
+  const V=0.002,s=150,ys=250,yBot=670,cx=340;
+  const fcol=r=>r>10000?'#cbd5e1':r<900?'#fcd34d':r>1010?'#67e8f9':'#93c5fd';
+  seg('ar_fl',b=>{rf=+b.dataset.r;fname=b.textContent});
+  seg('ar_pre',b=>{$('ar_r').value=b.dataset.r;updOut($('ar_r'))});
+  function draw(dt){
+    dt=dt||.016;const rc=+$('ar_r').value,f=rc/rf;
+    let topT,st;
+    if(f<.995){topT=ys-(1-f)*s;st=0}else if(f<=1.005){topT=ys+110;st=1}else{topT=yBot-s;st=2}
+    if(by===null)by=topT;by+=(topT-by)*Math.min(1,dt*5);
+    const P=rc*V*G,Vs=f<1?f*V:V,E=rf*Vs*G;
+    x.clearRect(0,0,1080,740);
+    x.fillStyle=fcol(rf);x.fillRect(85,ys,550,yBot-ys);
+    x.strokeStyle='#334155';x.lineWidth=10;x.lineJoin='round';x.setLineDash([]);x.beginPath();x.moveTo(80,150);x.lineTo(80,yBot+5);x.lineTo(640,yBot+5);x.lineTo(640,150);x.stroke();
+    x.strokeStyle='#1e40af';x.lineWidth=3;x.beginPath();x.moveTo(85,ys);x.lineTo(635,ys);x.stroke();
+    T(x,fname+' · ρ_{f} = '+fmt(rf,0)+' kg/m³',360,64,28,'#0f172a','center');
+    const t=clamp((rc-100)/7750,0,1),R=Math.round(214+(100-214)*t),Gc=Math.round(165+(116-165)*t),B=Math.round(107+(139-107)*t);
+    x.fillStyle='rgb('+R+','+Gc+','+B+')';x.fillRect(cx-s/2,by,s,s);
+    const ov=Math.max(by,ys);if(by+s>ys){x.save();x.globalAlpha=.38;x.fillStyle=fcol(rf);x.fillRect(cx-s/2,ov,s,by+s-ov);x.restore()}
+    x.strokeStyle='#1e293b';x.lineWidth=4;x.strokeRect(cx-s/2,by,s,s);
+    T(x,'ρ_{c} = '+fmt(rc,0),cx,by+s/2+2,22,t>.45?'#fff':'#1e293b','center');
+    T(x,'V = 2,0 L',cx,by+s/2+28,20,t>.45?'#fff':'#1e293b','center');
+    const yc=by+s/2,LP=Math.min(150,30+16*Math.sqrt(P)),ysub=(ov+by+s)/2,LE=Math.min(150,30+16*Math.sqrt(E));
+    arrow(x,cx+62,yc,cx+62,yc+LP,'#dc2626',8,20);
+    T(x,'P = '+fmt(P,1)+' N',cx+s/2+14,yc+LP*.55+8,26,'#b91c1c','left');
+    arrow(x,cx-62,ysub,cx-62,ysub-LE,'#2563eb',8,20);
+    T(x,'E = '+fmt(E,1)+' N',cx-s/2-14,ysub-LE*.55+8,26,'#1d4ed8','right');
+    if(st===2){const N=P-E;if(N>.01){arrow(x,cx,yBot+36,cx,yBot-4,'#ea580c',6,14);T(x,'N = '+fmt(N,1)+' N',cx+14,yBot+34,24,'#c2410c','left')}}
+    T(x,st===0?'FLUTUA':st===1?'EQUILÍBRIO':'AFUNDA',860,230,40,st===0?'#15803d':st===1?'#b45309':'#b91c1c','center');
+    let r1,badge;
+    if(st===0){badge='<span class="g">flutua — '+fmt(f*100,0)+' % submerso</span>'}
+    else if(st===1){badge='<span class="g">densidades iguais: equilíbrio em qualquer profundidade</span>'}
+    else{badge='<span class="r">afunda — peso aparente P − E = '+fmt(P-E,1)+' N</span>'}
+    const str='P = ρ<sub>c</sub>·V·g = '+fmt(rc,0)+' × 0,002 × 9,8 = <b>'+fmt(P,1)+' N</b><br>E = ρ<sub>f</sub>·V<sub>sub</sub>·g = '+fmt(rf,0)+' × '+fmt(Vs*1000,2)+' L × 9,8 = <b>'+fmt(E,1)+' N</b><br>'+badge;
+    if(str!==last){$('ar_out').innerHTML=str;last=str}
+  }
+  reg('s-arq',{tick:draw,enter(){by=null;draw(.016)}});
+})();
+
+/* ============ SIM 4: Continuidade ============ */
+(function(){
+  const C=setup('cv_cont'),x=C.x;let last='',lastR='';
+  const PXMM=4,xa=380,xb=560,cy=240,xs1=200,xs2=830;
+  const Dm=(xx,d1,d2)=>{const t=clamp((xx-xa)/(xb-xa),0,1);return d1+(d2-d1)*t};
+  const Pt=[];for(let i=0;i<85;i++)Pt.push({x:40+Math.random()*1000,f:Math.random()*1.8-.9});
+  function draw(dt){
+    dt=dt||0;const Q=+$('co_q').value*1e-3,d1=+$('co_d1').value,d2=+$('co_d2').value;
+    for(const p of Pt){const D=Dm(p.x,d1,d2),A=Math.PI*D*D/4e6,v=Q/A;p.x+=Math.min(v*22,900)*dt;if(p.x>1040){p.x=40;p.f=Math.random()*1.8-.9}}
+    x.clearRect(0,0,1080,500);
+    x.beginPath();for(let xx=40;xx<=1040;xx+=8)x.lineTo(xx,cy-Dm(xx,d1,d2)*PXMM/2);for(let xx=1040;xx>=40;xx-=8)x.lineTo(xx,cy+Dm(xx,d1,d2)*PXMM/2);x.closePath();x.fillStyle='#e0f2fe';x.fill();
+    x.strokeStyle='#334155';x.lineWidth=8;x.lineJoin='round';x.setLineDash([]);
+    x.beginPath();for(let xx=40;xx<=1040;xx+=8)x.lineTo(xx,cy-Dm(xx,d1,d2)*PXMM/2);x.stroke();
+    x.beginPath();for(let xx=40;xx<=1040;xx+=8)x.lineTo(xx,cy+Dm(xx,d1,d2)*PXMM/2);x.stroke();
+    x.fillStyle='#0369a1';for(const p of Pt){const D=Dm(p.x,d1,d2);x.beginPath();x.arc(p.x,cy+p.f*D*PXMM/2*.9,6,0,7);x.fill()}
+    [[xs1,d1,'①'],[xs2,d2,'②']].forEach(a=>{const r=a[1]*PXMM/2;dash(x,6,6);x.strokeStyle='#64748b';x.lineWidth=2;x.beginPath();x.moveTo(a[0],cy-r-30);x.lineTo(a[0],cy+r+10);x.stroke();x.setLineDash([]);
+      T(x,a[2]+' D = '+fmt(a[1],0)+' mm',a[0],cy-r-40,26,'#075985','center')});
+    const A1=Math.PI*d1*d1/4e6,A2=Math.PI*d2*d2/4e6,v1=Q/A1,v2=Q/A2;
+    [[xs1,v1,'v₁'],[xs2,v2,'v₂']].forEach(a=>{const L=clamp(a[1]*14,24,230);arrow(x,a[0]-L/2,400,a[0]+L/2,400,'#16a34a',10,22);T(x,a[2]+' = '+fmt(a[1],2)+' m/s',a[0],446,28,'#15803d','center')});
+    T(x,'A menor área ⇒ maior velocidade',540,488,24,'#475569','center');
+    const s=rows([['Área A₁ = πD₁²/4',fmt(A1*1e4,2)+' cm²'],['Área A₂ = πD₂²/4',fmt(A2*1e4,2)+' cm²'],['Vazão Q',fmt(Q*1000,2)+' L/s'],['Velocidade v₁ = Q/A₁',fmt(v1,2)+' m/s'],['Velocidade v₂ = Q/A₂',fmt(v2,2)+' m/s'],['Razão v₂/v₁ = (D₁/D₂)²',fmt(v2/v1,2)+' ×']]);
+    if(s!==lastR){$('co_rd').innerHTML=s;lastR=s}
+    const l='A₁·v₁ = '+sci(A1,3)+' × '+fmt(v1,2)+' = <b>'+sci(Q,3)+' m³/s</b><br>A₂·v₂ = '+sci(A2,3)+' × '+fmt(v2,2)+' = <b>'+sci(Q,3)+' m³/s</b> <span class="g">✔ iguais</span>';
+    if(l!==last){$('co_out').innerHTML=l;last=l}
+  }
+  reg('s-cont',{tick:draw,enter(){draw(0)}});
+})();
+
+/* ============ SIM 5: Bernoulli ============ */
+(function(){
+  const C=setup('cv_bern'),x=C.x;let lastR='';
+  const yref=640,S=88,xA=50,xB=320,xC=590,xD=700,K=1.2;
+  const prof=(xx,d1,d2,h2)=>{const t=clamp((xx-xB)/(xC-xB),0,1),s=t*t*(3-2*t);return{yc:yref-s*h2*S,D:d1+(d2-d1)*s}};
+  const Pt=[];for(let i=0;i<75;i++)Pt.push({x:xA+Math.random()*650,f:Math.random()*1.8-.9});
+  function draw(dt){
+    dt=dt||0;
+    const Q=+$('be_q').value*1e-3,d1=+$('be_d1').value,d2=+$('be_d2').value,h2=+$('be_h').value,p1=+$('be_p').value*1000,rho=1000;
+    const A1=Math.PI*d1*d1/4e6,A2=Math.PI*d2*d2/4e6,v1=Q/A1,v2=Q/A2;
+    const p2=p1+.5*rho*(v1*v1-v2*v2)-rho*G*h2;
+    for(const p of Pt){const o=prof(p.x,d1,d2,h2),v=Q/(Math.PI*o.D*o.D/4e6);p.x+=Math.min(v*16,700)*dt;if(p.x>xD){p.x=xA;p.f=Math.random()*1.8-.9}}
+    x.clearRect(0,0,1080,740);
+    dash(x,10,8);x.strokeStyle='#94a3b8';x.lineWidth=3;x.beginPath();x.moveTo(30,yref);x.lineTo(740,yref);x.stroke();x.setLineDash([]);
+    T(x,'nível de referência (h = 0)',400,yref+36,23,'#64748b','left','600');
+    const top=[],bot=[];for(let xx=xA;xx<=xD;xx+=6){const o=prof(xx,d1,d2,h2);top.push([xx,o.yc-o.D*K/2]);bot.push([xx,o.yc+o.D*K/2])}
+    x.beginPath();top.forEach(q=>x.lineTo(q[0],q[1]));bot.slice().reverse().forEach(q=>x.lineTo(q[0],q[1]));x.closePath();x.fillStyle='#e0f2fe';x.fill();
+    x.strokeStyle='#334155';x.lineWidth=8;x.lineJoin='round';
+    x.beginPath();top.forEach(q=>x.lineTo(q[0],q[1]));x.stroke();x.beginPath();bot.forEach(q=>x.lineTo(q[0],q[1]));x.stroke();
+    x.fillStyle='#0369a1';for(const p of Pt){const o=prof(p.x,d1,d2,h2);x.beginPath();x.arc(p.x,o.yc+p.f*o.D*K/2*.88,5,0,7);x.fill()}
+    const o2=prof(xD,d1,d2,h2),yc2=o2.yc,r1=d1*K/2,r2=d2*K/2;
+    const x1=170,x2=650;
+    x.fillStyle='#0f172a';x.beginPath();x.arc(x1,yref,8,0,7);x.fill();x.beginPath();x.arc(x2,yc2,8,0,7);x.fill();
+    T(x,'①',x1,yref-r1-14,34,'#075985','center');T(x,'②',x2,yc2-r2-14,34,'#075985','center');
+    T(x,'v₁ = '+fmt(v1,1)+' m/s',x1,yref+r1+34,24,'#15803d','center');T(x,'p₁ = '+fmt(p1/1000,0)+' kPa',x1,yref+r1+62,24,CP,'center');
+    T(x,'v₂ = '+fmt(v2,1)+' m/s',x2,yc2-r2-52,24,'#15803d','center');T(x,'p₂ = '+fmt(p2/1000,1)+' kPa',x2,yc2-r2-82,24,CP,'center');
+    if(h2>.05){dash(x,3,7);x.strokeStyle='#0f172a';x.lineWidth=2.5;x.beginPath();x.moveTo(x2,yc2);x.lineTo(728,yc2);x.stroke();x.setLineDash([]);
+      arrow(x,726,yref-3,726,yc2+3,'#0f172a',3,10);T(x,'h₂ = '+fmt(h2,1)+' m',714,(yref+yc2)/2,26,CU,'right')}
+    // barras de energia
+    const kin1=.5*rho*v1*v1/1000,kin2=.5*rho*v2*v2/1000,u2=rho*G*h2/1000,pk1=p1/1000,pk2=Math.max(0,p2/1000);
+    const bars=[[800,pk1,kin1,0],[935,pk2,kin2,u2]],sb=520/620,yb=650;
+    T(x,'Energia por volume (kPa)',915,58,26,'#075985','center');
+    let tops=[];
+    let over=false;
+    bars.forEach((b,i)=>{let y=yb;[[b[1],CP,'p'],[b[2],CK,'½ρv²'],[b[3],CU,'ρgh']].forEach(sg=>{let h=sg[0]*sb;const room=y-(yb-520);if(h>room){h=Math.max(0,room);over=true}if(h>0){x.fillStyle=sg[1];x.fillRect(b[0],y-h,100,h);if(h>30)T(x,fmt(sg[0],1),b[0]+50,y-h/2+9,24,'#fff','center');y-=h}});tops.push(y);
+      T(x,i?'②':'①',b[0]+50,yb+34,32,'#075985','center')});
+    dash(x,8,6);x.strokeStyle='#0f172a';x.lineWidth=3;x.beginPath();x.moveTo(790,tops[0]);x.lineTo(1045,tops[0]);x.stroke();x.setLineDash([]);
+    if(over)T(x,'barra fora de escala',915,92,22,'#dc2626','center');
+    const S1=pk1+kin1,S2=pk2+kin2+u2;
+    T(x,'Σ = '+fmt(S1,1),850,tops[0]-10,24,'#0f172a','center');
+    if(p2<0)T(x,'p₂ < 0 !',985,tops[1]-10,24,'#dc2626','center'); else T(x,'Σ = '+fmt(S2,1),985,tops[1]-10,24,'#0f172a','center');
+    [['p',CP,790],['½ρv²',CK,880],['ρgh',CU,985]].forEach(l=>{x.fillStyle=l[1];x.fillRect(l[2],696,22,22);T(x,l[0],l[2]+30,715,24,'#334155','left')});
+    const w=p2<=2300?'<span style="grid-column:span 2;color:#dc2626;font-weight:800;font-size:25px">p₂ ≤ pressão de vapor (≈ 2,3 kPa): cavitação — a equação deixa de valer</span>':'';
+    const s=rows([['Velocidade v₁ = Q/A₁',fmt(v1,2)+' m/s'],['Velocidade v₂ = Q/A₂',fmt(v2,2)+' m/s'],['Pressão em ②, p₂',fmt(p2/1000,1)+' kPa'],['Energia total Σ₁ (kPa)',fmt(S1,1)],['Energia total Σ₂ (kPa)',p2<0?'—':fmt(S2,1)]])+w;
+    if(s!==lastR){$('be_rd').innerHTML=s;lastR=s}
+  }
+  reg('s-simb',{tick:draw,enter(){draw(0)}});
+})();
+
+/* ============ Venturi (ilustração + simulação) ============ */
+function VenturiView(id,get){
+  const C=setup(id),x=C.x,K=1.6,cy=500,xs1=150,xs2=495,Sh=34;
+  const prof=(d1,d2)=>xx=>{const r1=d1*K/2,r2=d2*K/2;if(xx<250)return r1;if(xx<430)return r1+(r2-r1)*(xx-250)/180;if(xx<560)return r2;if(xx<860)return r2+(r1-r2)*(xx-560)/300;return r1};
+  const Pt=[];for(let i=0;i<100;i++)Pt.push({x:30+Math.random()*1040,f:Math.random()*1.8-.9});
+  const caps=['','Seção diminui: A₂ < A₁','Velocidade aumenta: v₂ > v₁','Pressão diminui: p₂ < p₁','Δp = p₁ − p₂  ⇒  vazão Q','Difusor: recupera quase toda a pressão'];
+  function calc(o){const A1=Math.PI*o.D1*o.D1/4e6,A2=Math.PI*o.D2*o.D2/4e6,Q=o.Q*1e-3,v1=Q/A1,v2=Q/A2,dp=.5*1000*(v2*v2-v1*v1),p2=o.p1*1000-dp;return{A1,A2,Q,v1,v2,dp,p2}}
+  function draw(dt){
+    const o=get(),r=prof(o.D1,o.D2),R=calc(o),st=o.stage;
+    for(const p of Pt){const rr=r(p.x),D=2*rr/K,v=R.Q/(Math.PI*D*D/4e6);p.x+=Math.min(v*28,800)*dt;if(p.x>1070){p.x=30;p.f=Math.random()*1.8-.9}}
+    x.clearRect(0,0,1080,740);
+    const showCols=st>=3,showVel=st>=2,showDelta=st>=4;
+    const lv=[o.p1/G,R.p2/1000/G];
+    if(showCols){[xs1,xs2].forEach((xs,i)=>{
+      const yw=cy-r(xs),lvl=cy-lv[i]*Sh;
+      x.fillStyle='#fff';x.fillRect(xs-19,40,38,yw-40);
+      if(lv[i]>0&&lvl<yw){x.fillStyle='#7dd3fc';x.fillRect(xs-19,lvl,38,yw-lvl)}
+      x.strokeStyle='#0f172a';x.lineWidth=4;x.setLineDash([]);x.beginPath();x.moveTo(xs-19,40);x.lineTo(xs-19,yw);x.moveTo(xs+19,40);x.lineTo(xs+19,yw);x.stroke();
+      T(x,i?'p₂':'p₁',xs+34,60,26,CP,'left')})}
+    // tubo
+    x.beginPath();for(let xx=30;xx<=1070;xx+=5)x.lineTo(xx,cy-r(xx));for(let xx=1070;xx>=30;xx-=5)x.lineTo(xx,cy+r(xx));x.closePath();x.fillStyle='#e0f2fe';x.fill();
+    if(st===1){x.beginPath();x.lineTo(250,cy-r(250));x.lineTo(430,cy-r(430));x.lineTo(430,cy+r(430));x.lineTo(250,cy+r(250));x.closePath();x.fillStyle='rgba(245,158,11,.35)';x.fill()}
+    if(st===5){x.beginPath();x.lineTo(560,cy-r(560));x.lineTo(860,cy-r(860));x.lineTo(860,cy+r(860));x.lineTo(560,cy+r(560));x.closePath();x.fillStyle='rgba(34,197,94,.3)';x.fill()}
+    x.strokeStyle='#334155';x.lineWidth=9;x.lineJoin='round';x.setLineDash([]);
+    x.beginPath();for(let xx=30;xx<=1070;xx+=5)x.lineTo(xx,cy-r(xx));x.stroke();x.beginPath();for(let xx=30;xx<=1070;xx+=5)x.lineTo(xx,cy+r(xx));x.stroke();
+    // abertura dos piezômetros no tubo
+    if(showCols){[xs1,xs2].forEach(xs=>{const yw=cy-r(xs);x.strokeStyle='#e0f2fe';x.lineWidth=11;x.beginPath();x.moveTo(xs-14,yw);x.lineTo(xs+14,yw);x.stroke()})}
+    x.fillStyle='#0369a1';for(const p of Pt){const rr=r(p.x);x.beginPath();x.arc(p.x,cy+p.f*rr*.88,5,0,7);x.fill()}
+    if(showVel){[[xs1,R.v1,'v₁'],[xs2,R.v2,'v₂']].forEach(a=>{const L=clamp(a[1]*14,26,200),yy=cy-(a[0]===xs1?0:0);x.save();x.shadowColor='#fff';x.shadowBlur=6;arrow(x,a[0]-L/2,yy,a[0]+L/2,yy,'#15803d',10,22);x.restore();
+      T(x,a[2]+' = '+fmt(a[1],1)+' m/s',a[0],cy+r(a[0])+50,26,'#15803d','center')})}
+    T(x,'① entrada',xs1,cy+r(xs1)+(showVel?84:48),26,'#075985','center');
+    T(x,'② garganta',xs2,cy+r(xs2)+(showVel?84:48),26,'#075985','center');
+    if(showDelta&&showCols){const l1=cy-lv[0]*Sh,l2=cy-lv[1]*Sh,yw2=cy-r(xs2);
+      if(lv[1]>0&&l2<yw2&&Math.abs(l2-l1)>6){dash(x,8,6);x.strokeStyle=CP;x.lineWidth=2.5;x.beginPath();x.moveTo(xs1+19,l1);x.lineTo(640,l1);x.moveTo(xs2+19,l2);x.lineTo(640,l2);x.stroke();x.setLineDash([]);
+        arrow(x,620,(l1+l2)/2,620,l1+1,'#0f172a',3,10);arrow(x,620,(l1+l2)/2,620,l2-1,'#0f172a',3,10);
+        T(x,'Δh',636,(l1+l2)/2+9,30,'#b45309','left')}}
+    if(R.p2<0)T(x,'p₂ < pressão atmosférica: garganta em vácuo',540,30,26,'#dc2626','center');
+    if(o.cap&&caps[st])T(x,caps[st],540,722,34,'#075985','center');
+    return R;
+  }
+  return{draw,calc};
+}
+
+/* Simulação */
+(function(){
+  const o={D1:100,D2:50,Q:14.25,p1:80,stage:9,cap:false};
+  const V=VenturiView('cv_simv',()=>{
+    o.D1=+$('sv_d1').value;const mx=Math.floor(.9*o.D1);
+    if(+$('sv_d2').value>mx){$('sv_d2').value=mx;updOut($('sv_d2'))}
+    o.D2=+$('sv_d2').value;o.Q=+$('sv_q').value;o.p1=+$('sv_p').value;return o});
+  let last='';
+  reg('s-simv',{tick(dt){const R=V.draw(dt);
+      const dh=R.dp/(1000*G),hHg=R.dp/((13600-1000)*G);
+      const s=rows([['v₁ = Q/A₁',fmt(R.v1,2)+' m/s'],['v₂ = Q/A₂',fmt(R.v2,2)+' m/s'],['Δp = ½ρ(v₂² − v₁²)',fmt(R.dp/1000,1)+' kPa'],['p₂ = p₁ − Δp',fmt(R.p2/1000,1)+' kPa'],['Δh (colunas de água)',fmt(dh,2)+' m'],['h num U com mercúrio',fmt(hHg*1000,0)+' mm'],['Vazão Q em m³/h',fmt(R.Q*3600,1)]]);
+      if(s!==last){$('sv_rd').innerHTML=s;last=s}},
+    enter(){V.draw(0)}});
+})();
+
+/* ============ Ejetor / sucção ============ */
+(function(){
+  const C=setup('cv_ejet'),x=C.x,cy=230,px=470;let stage=4,partY=532;
+  const r=xx=>{if(xx<230)return 90;if(xx<420)return 90+(26-90)*(xx-230)/190;if(xx<520)return 26;if(xx<820)return 26+(70-26)*(xx-520)/300;return 70};
+  const Pt=[];for(let i=0;i<70;i++)Pt.push({x:30+Math.random()*1020,f:Math.random()*1.8-.9});
+  const Sd=[];for(let i=0;i<14;i++)Sd.push({y:cy+30+Math.random()*(480-cy-30),f:Math.random()*1.4-.7});
+  function draw(dt){
+    dt=dt||0;
+    for(const p of Pt){const rr=r(p.x),v=40*Math.pow(90/rr,2);p.x+=Math.min(v,720)*dt;if(p.x>1050){p.x=30;p.f=Math.random()*1.8-.9}}
+    if(stage>=3)for(const q of Sd){q.y-=110*dt;if(q.y<cy+20){q.y=480;q.f=Math.random()*1.4-.7}}
+    partY+=((stage>=4?532:592)-partY)*Math.min(1,dt*3);
+    x.clearRect(0,0,1080,740);
+    // porta lateral + ventosa
+    x.fillStyle='#e0f2fe';x.fillRect(px-22,cy+20,44,470-cy-20);
+    x.beginPath();x.moveTo(px-22,470);x.lineTo(px+22,470);x.lineTo(px+85,530);x.lineTo(px-85,530);x.closePath();x.fillStyle='#cbd5e1';x.fill();x.strokeStyle='#334155';x.lineWidth=7;x.stroke();
+    x.beginPath();x.moveTo(px-22,cy+20);x.lineTo(px-22,470);x.moveTo(px+22,cy+20);x.lineTo(px+22,470);x.stroke();
+    // tubo principal
+    x.beginPath();for(let xx=30;xx<=1050;xx+=5)x.lineTo(xx,cy-r(xx));for(let xx=1050;xx>=30;xx-=5)x.lineTo(xx,cy+r(xx));x.closePath();x.fillStyle='#e0f2fe';x.fill();
+    x.fillStyle='#e0f2fe';x.fillRect(px-19,cy+r(px)-4,38,12);
+    x.strokeStyle='#334155';x.lineWidth=9;x.lineJoin='round';
+    x.beginPath();for(let xx=30;xx<=1050;xx+=5)x.lineTo(xx,cy-r(xx));x.stroke();
+    x.beginPath();for(let xx=30;xx<=px-22;xx+=5)x.lineTo(xx,cy+r(xx));x.stroke();x.beginPath();for(let xx=px+22;xx<=1050;xx+=5)x.lineTo(xx,cy+r(xx));x.stroke();
+    x.fillStyle='#0369a1';for(const p of Pt){const rr=r(p.x);x.beginPath();x.arc(p.x,cy+p.f*rr*.85,5,0,7);x.fill()}
+    if(stage>=3){x.fillStyle='#7c3aed';for(const q of Sd){x.beginPath();x.arc(px+q.f*16,q.y,5,0,7);x.fill()}}
+    // peça e mesa
+    x.fillStyle='#94a3b8';x.fillRect(250,660,440,22);
+    x.fillStyle='#64748b';x.fillRect(px-130,partY,260,60);x.strokeStyle='#1e293b';x.lineWidth=4;x.strokeRect(px-130,partY,260,60);
+    T(x,'peça',px,partY+40,28,'#fff','center');
+    // rótulos
+    T(x,'Ar de entrada',130,cy-r(130)-18,28,'#075985','center');
+    T(x,'Escape',930,cy-r(930)-18,28,'#075985','center');
+    T(x,'Ventosa',px+110,505,26,'#334155','left');
+    if(stage>=1)arrow(x,40,cy,150,cy,'#0369a1',9,20);
+    if(stage>=2){arrow(x,400,cy-r(470)-44,550,cy-r(470)-44,'#15803d',10,22);T(x,'garganta: v alta',px,cy-r(470)-62,28,'#15803d','center')}
+    if(stage>=3)T(x,'p < p_{atm}  (vácuo)',px+36,cy+95,28,'#7c3aed','left');
+    if(stage>=4){[-90,0,90].forEach(o=>arrow(x,px+o,718,px+o,676,'#2563eb',6,14));T(x,'p_{atm} empurra a peça',px+130,718,26,'#1d4ed8','left');
+      T(x,'F = Δp · A',px+142,partY+40,28,'#b91c1c','left')}
+  }
+  reg('s-ejet',{tick:draw,enter(){draw(0)}});$('ej_btn').onclick=function(){const off=stage>=4;stage=off?0:4;this.textContent=off?'▶ Ligar a sucção':'⏸ Desligar a sucção'};
+})();
+
+
+document.querySelectorAll('.sim .amp').forEach(b=>b.addEventListener('click',()=>{const w=b.parentNode.querySelector('.cvwrap');w.classList.toggle('big')}));
+let last=performance.now();
+function loop(t){const dt=Math.min(.05,(t-last)/1000);last=t;
+  for(const k in hooks){const c=document.getElementById(MAP[k]);if(c&&c.offsetParent!==null&&hooks[k].tick)hooks[k].tick(dt)}
+  requestAnimationFrame(loop)}
+requestAnimationFrame(loop);
+})();
+
+</script>
+</body>
+</html>
