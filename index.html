@@ -99,6 +99,14 @@ footer{text-align:center;font-size:.8rem;color:#64748b;margin:22px 0 8px}
 .read span:nth-child(even){font-weight:700;text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
 .obs{background:var(--explain-bg);border-left:4px solid var(--explain-border);color:var(--explain-text);border-radius:0 8px 8px 0;padding:10px 12px;margin:10px 0;font-size:.93rem}
 .sim .btn{width:100%}
+
+/* ---------- Tela cheia ---------- */
+#btn-fs{position:fixed;right:12px;bottom:14px;z-index:50;width:52px;height:52px;border-radius:50%;border:0;background:var(--accent);color:#fff;font-size:24px;box-shadow:0 4px 14px rgba(0,0,0,.3);cursor:pointer;touch-action:manipulation}
+#btn-fs:active{background:var(--accent-dark)}
+.sim:fullscreen{background:#fff;overflow:auto;padding:12px}
+.sim:fullscreen .cvwrap canvas{width:1080px}
+.sim .btn-fs-sim{width:100%;margin-bottom:10px;background:var(--accent-dark)}
+@media print{#btn-fs{display:none}}
 </style>
 </head>
 <body>
@@ -575,6 +583,22 @@ function loop(t){const dt=Math.min(.05,(t-last)/1000);last=t;
 requestAnimationFrame(loop);
 })();
 
+</script>
+<script>
+(function(){
+const de=document.documentElement;
+const can=!!(de.requestFullscreen||de.webkitRequestFullscreen);
+const isFs=()=>document.fullscreenElement||document.webkitFullscreenElement;
+const req=el=>(el.requestFullscreen||el.webkitRequestFullscreen).call(el);
+const ex=()=>(document.exitFullscreen||document.webkitExitFullscreen).call(document);
+const b=document.createElement('button');b.id='btn-fs';b.type='button';b.title='Tela cheia';b.setAttribute('aria-label','Tela cheia');b.textContent='⛶';
+if(can){b.onclick=()=>{isFs()?ex():req(de)};document.body.appendChild(b)}
+function upd(){b.textContent=isFs()?'✕':'⛶'}
+document.addEventListener('fullscreenchange',upd);document.addEventListener('webkitfullscreenchange',upd);
+if(can)document.querySelectorAll('.sim').forEach(s=>{const a=s.querySelector('.amp');if(!a)return;
+  const f=document.createElement('button');f.type='button';f.className='btn btn-fs-sim';f.textContent='⛶ Simulação em tela cheia';
+  f.onclick=()=>{isFs()?ex():req(s)};a.after(f)});
+})();
 </script>
 </body>
 </html>
